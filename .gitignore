@@ -1,0 +1,2 @@
+# 테스트를 QA_SCREENSHOTS=1 로 돌릴 때만 생기는 확인용 스크린샷
+qa/screenshots/
