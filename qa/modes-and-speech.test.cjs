@@ -60,7 +60,7 @@ const SPY = () => {
 
     // 기본값은 기존 동작(영어 뜻 고르기) 그대로여야 한다.
     assert.equal(await mode('en').getAttribute('aria-pressed'), 'true');
-    for (const other of ['ko', 'cloze', 'mix']) assert.equal(await mode(other).getAttribute('aria-pressed'), 'false');
+    for (const other of ['ko', 'cloze', 'listen', 'mix']) assert.equal(await mode(other).getAttribute('aria-pressed'), 'false');
     assert.match(await page.locator('#mode-help').innerText(), /영어 설명을 골라요/);
 
     // --- 모드 1: 영어 뜻 고르기 (단어 제시 → 영어 정의 보기)
@@ -256,22 +256,22 @@ const SPY = () => {
     assert(await page.evaluate(() => window.__cancels || 0) > cancelsBefore, 'moving to the next question cancels any speech still playing');
     assert.equal(await page.evaluate(() => state.phase), 'question');
 
-    // --- 모드 4: 섞어서 — 세 방식이 모두 나와야 한다.
+    // --- 모드 4: 섞어서 — 네 방식이 모두 나와야 한다.
     await page.locator('#change-words').click();
     await startWith('mix', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
     const seen = new Set();
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 60; i++) {
       seen.add(await page.evaluate(() => state.mode));
       await page.evaluate(() => { state.cursor = (state.cursor + 1) % state.queue.length; renderQuestion(false); });
     }
-    assert.deepEqual([...seen].sort(), ['cloze', 'en', 'ko'], `mix produced only ${[...seen]}`);
+    assert.deepEqual([...seen].sort(), ['cloze', 'en', 'ko', 'listen'], `mix produced only ${[...seen]}`);
 
     // 예문에 원형이 없는 구동사는 빈칸을 못 만들므로 다른 방식으로 넘어가야 한다.
     const fallback = await page.evaluate(() => {
       const entry = words.find(w => w.word === 'quadruple') || words[0];
       return { cloze: Boolean(clozeParts(entry)), modes: availableModes({ word: 'lay off', part: 'verb', example: 'The company laid off staff.' }) };
     });
-    assert.deepEqual(fallback.modes, ['en', 'ko'], 'a phrasal verb with no literal match falls back');
+    assert.deepEqual(fallback.modes, ['en', 'ko', 'listen'], 'a phrasal verb with no literal match drops cloze only');
 
     // 선택한 방식은 새로고침 후에도 유지되고, 학습 기록 초기화와는 무관하다.
     await page.locator('#change-words').click();
@@ -319,6 +319,7 @@ const SPY = () => {
     await noVoice.addInitScript(() => { Object.defineProperty(window, 'speechSynthesis', { value: undefined, configurable: true }); });
     await noVoice.goto(pageURL);
     await noVoice.evaluate(id => chooseLevel(lessons.find(l => l.id === id).level), LESSON).then(() => noVoice.locator(`[data-lesson="${LESSON}"]`).click());
+    assert.equal(await noVoice.locator('[data-selection-action="mode"][data-mode="listen"]').count(), 0, 'no listen mode without speech');
     await noVoice.evaluate(() => setDraftSelection([0, 1]));
     await noVoice.locator('[data-selection-action="start"]').click();
     assert.equal(await noVoice.locator('[data-speak]').count(), 0, 'no speak buttons without speech support');
@@ -331,7 +332,7 @@ const SPY = () => {
     assert.deepEqual(quiet, []);
     await noVoice.close();
 
-    console.log('PASS: three question directions (definition / meaning-to-word / cloze), mix cycles all three, phrasal-verb fallback, real-word distractors, answer never leaked by phrase or audio, auto-read on entry (word / korean meaning / silent), per-choice and all-choices reading without selecting, chime-only on correct, dejected 틀렸어요 + word on wrong, sound toggles persisted, TTS click + S shortcut, mode persistence, graceful degradation without speechSynthesis.');
+    console.log('PASS: four question directions (definition / meaning-to-word / cloze / listen), mix cycles all four, phrasal-verb fallback, real-word distractors, answer never leaked by phrase or audio, auto-read on entry (word / korean meaning / silent), per-choice and all-choices reading without selecting, chime-only on correct, dejected 틀렸어요 + word on wrong, sound toggles persisted, TTS click + S shortcut, mode persistence, graceful degradation without speechSynthesis.');
   } finally {
     await browser.close();
   }

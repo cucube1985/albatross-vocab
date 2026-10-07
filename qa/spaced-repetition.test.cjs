@@ -89,6 +89,10 @@ const plusDays = n => { const d = new Date(); d.setDate(d.getDate() + n); return
     await page.locator('#back-to-lessons').click();
     assert.match(await page.locator('.library-stats-row').innerText(), /오늘 복습할 단어 1개/);
     assert.equal(await page.locator(`[data-lesson="${LESSON}"] .due-badge`).innerText(), '오늘 복습할 단어 1개');
+    // 복습 배지도 카드 설명으로 읽혀요(버튼 자식은 스크린리더에서 평탄화되니까).
+    assert.equal(await page.locator(`[data-lesson="${LESSON}"]`).getAttribute('aria-describedby'), `action-${LESSON} mastery-${LESSON} due-${LESSON}`); assert.equal(await page.locator(`#due-${LESSON}`).count(), 1);
+    // 헷갈림 표시 1개(1단계)·오답 1개(1단계): 둘 다 '복습 필요'로 세고, 홈 분포는 1단계 2개예요.
+    assert.match(await page.locator(`[data-lesson="${LESSON}"] .mastery-text`).innerText(), /굳음 0 · 다지는 중 0 · 복습 필요 2 · 정답률 50%/); assert.match(await page.locator('.library-stats-row').innerText(), /2 \/ 950 단어 학습 · 굳음 0개 · 다지는 중 0개 · 복습 필요 2개/); assert.match(await page.locator('.stage-bar').getAttribute('aria-label'), /미학습 948개, 1단계 2개, 2단계 0개/);
     await snap(page, { path: path.join(__dirname, 'screenshots', 'leitner-library.png'), fullPage: true });
 
     // A due date in the past counts as due, and the badge is distinct from 헷갈림/오답.
@@ -138,6 +142,24 @@ const plusDays = n => { const d = new Date(); d.setDate(d.getDate() + n); return
     assert.equal(migrated.pessimistic.due, localToday());
     await openLesson();
     assert.equal(await filter('due').innerText(), '복습할 때 2개');
+
+    // wordStatus 는 기억 단계만으로 상태를 정해요: 미학습 / 복습 필요(1단계·마지막 오답·헷갈림) / 다지는 중(2~3) / 굳음(4~5).
+    assert.deepEqual(await page.evaluate(() => [null, { seen: 0 }, { seen: 1, box: 1, lastResult: true, unsure: false }, { seen: 1, box: 2, lastResult: true, unsure: false }, { seen: 2, box: 3, lastResult: false, unsure: false }, { seen: 2, box: 3, lastResult: true, unsure: true }, { seen: 3, box: 4, lastResult: true, unsure: false }, { seen: 5, box: 5, lastResult: true, unsure: false }].map(wordStatus)), ['unseen', 'unseen', 'review', 'building', 'review', 'review', 'solid', 'solid']);
+
+    // 단계 1..5 를 하나씩 심으면 수업 카드·홈 분포·레벨 버튼이 모두 같은 분포를 보여요.
+    const five = await page.evaluate(id => lessons.find(l => l.id === id).words.slice(0, 5).map(w => w.word), LESSON);
+    await page.evaluate(([lesson, names]) => { const stats = {}; names.forEach((word, i) => { const box = i + 1; stats[word] = { seen: box, correct: box, wrong: 0, unsure: false, lastResult: true, last: '2026-01-01', box, due: '2099-01-01' }; }); window.localStorage.setItem('albatross-progress-v1', JSON.stringify({ v: 1, sessions: {}, stats: { [lesson]: stats } })); }, [LESSON, five]);
+    await page.reload();
+    const st = await page.evaluate(id => lessonStats(lessons.find(l => l.id === id)), LESSON);
+    assert.deepEqual(st.boxes, [35, 1, 1, 1, 1, 1]); assert.equal(st.solid, 2); assert.equal(st.building, 2); assert.equal(st.review, 1); assert.equal(st.studied, 5); assert.equal(st.due, 0); assert.equal(st.accuracy, 100); assert.equal(st.mastered, undefined);
+    assert.match(await page.locator('.library-stats-row').innerText(), /5 \/ 950 단어 학습 · 굳음 2개 · 다지는 중 2개 · 복습 필요 1개 · 정답률 100%/); assert.equal(await page.locator('.stage-headline').innerText(), '장기 기억(4~5단계) 2 / 950');
+    assert.deepEqual(await page.locator('.stage-legend li').allInnerTexts(), ['미학습 945', '1단계 1', '2단계 1', '3단계 1', '4단계 1', '5단계 1']); assert.deepEqual(await page.locator('.stage-bar i').evaluateAll(els => els.map(e => e.className)), ['stage-0', 'stage-1', 'stage-2', 'stage-3', 'stage-4', 'stage-5']); assert.equal(await page.locator('.stage-bar').getAttribute('aria-label'), '950개 단어의 기억 단계: 미학습 945개, 1단계 1개, 2단계 1개, 3단계 1개, 4단계 1개, 5단계 1개');
+    await page.evaluate(() => chooseLevel('C2'));
+    assert.deepEqual(await page.locator(`[data-lesson="${LESSON}"] .mastery-bar i`).evaluateAll(els => els.map(e => e.className)), ['is-mastered', 'is-building', 'is-review', 'is-unseen']); assert.match(await page.locator(`[data-lesson="${LESSON}"] .mastery-text`).innerText(), /굳음 2 · 다지는 중 2 · 복습 필요 1 · 정답률 100%/); assert.equal(await page.locator(`[data-lesson="${LESSON}"] .due-badge`).count(), 0); assert.equal(await page.locator('.mastery.is-empty').count(), 9);
+    assert.equal(await page.locator('.level-button[data-level="C2"] .level-bar i:not(.is-unseen)').count(), 3); assert.equal(await page.locator('.level-button[data-level="C1"] .level-bar i:not(.is-unseen)').count(), 0); assert.match(await page.locator('.level-button[data-level="C2"]').textContent(), /수업 10개 · 단어 400개.*굳음 2개, 다지는 중 2개, 복습 필요 1개/s); assert.match(await page.locator('.level-button[data-level="C1"]').textContent(), /수업 11개 · 단어 550개/); assert.doesNotMatch(await page.locator('.level-button[data-level="C1"]').textContent(), /굳음/);
+    // 눌린(초록 바탕) 레벨 버튼에서는 굳음 칸이 글자색으로 뒤집혀 배경에 묻히지 않아요.
+    const pressed = await page.evaluate(() => { const button = document.querySelector('.level-button[aria-pressed="true"]'); const solid = button.querySelector('.level-bar .is-mastered'); return { fill: getComputedStyle(solid).backgroundColor, text: getComputedStyle(button).color, bg: getComputedStyle(button).backgroundColor }; }); assert.equal(pressed.fill, pressed.text); assert.notEqual(pressed.fill, pressed.bg);
+    await openLesson(); // 이어지는 390px 스크린샷이 선택 화면 기준이라 돌아가요.
 
     // Mobile layout.
     await page.setViewportSize({ width: 390, height: 844 });

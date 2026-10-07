@@ -30,6 +30,11 @@ const pageURL = pathToFileURL(path.join(root, 'albatross-c2-lesson-03.html')).hr
     assert.match(await page.locator('.library-stats-row').innerText(), /0 \/ 950 단어 학습/);
     assert(await page.locator('#reset-progress').isDisabled());
     await page.evaluate(() => chooseLevel('C2')); assert.equal(await page.locator('.mastery.is-empty').count(), 10);
+    // 기록이 없을 때: 홈 분포 막대는 미학습 칸 하나, 레벨 막대는 빈 트랙, sr-only 숫자 없음.
+    assert.match(await page.locator('.stage-headline').innerText(), /장기 기억\(4~5단계\) 0 \/ 950/);
+    assert.equal(await page.locator('.stage-bar').getAttribute('aria-label'), '950개 단어의 기억 단계: 미학습 950개, 1단계 0개, 2단계 0개, 3단계 0개, 4단계 0개, 5단계 0개');
+    assert.equal(await page.locator('.stage-bar i').count(), 1); assert.equal(await page.locator('.stage-bar i.stage-0').count(), 1);
+    assert.equal(await page.locator('.level-bar').count(), 2); assert.equal(await page.locator('.level-bar i:not(.is-unseen)').count(), 0); assert.equal(await page.locator('.level-button .sr-only').count(), 0);
 
     // Filters start out empty except "안 푼 단어".
     await page.evaluate(id => chooseLevel(lessons.find(l => l.id === id).level), "albatross-c2-lesson-03").then(() => page.locator('[data-lesson="albatross-c2-lesson-03"]').click());
@@ -66,8 +71,14 @@ const pageURL = pathToFileURL(path.join(root, 'albatross-c2-lesson-03.html')).hr
     await page.evaluate(() => chooseLevel('C2'));
     const libraryText = await page.locator('.library-stats-row').innerText();
     assert.match(libraryText, /2 \/ 950 단어 학습/);
-    assert.match(libraryText, /익힘 1개 · 복습 필요 1개 · 정답률 50%/);
-    assert.match(await page.locator('[data-lesson="albatross-c2-lesson-03"] .mastery-text').innerText(), /1 \/ 40 익힘/);
+    assert.match(libraryText, /굳음 0개 · 다지는 중 1개 · 복습 필요 1개 · 정답률 50%/);
+    assert.match(await page.locator('[data-lesson="albatross-c2-lesson-03"] .mastery-text').innerText(), /굳음 0 · 다지는 중 1 · 복습 필요 1 · 정답률 50%/);
+    // 오답 1개(1단계)·정답 1개(2단계): 홈 분포·수업 카드·레벨 버튼 세 곳이 같은 숫자를 보여요.
+    assert.match(await page.locator('.stage-headline').innerText(), /0 \/ 950/); assert.match(await page.locator('.stage-bar').getAttribute('aria-label'), /미학습 948개, 1단계 1개, 2단계 1개, 3단계 0개, 4단계 0개, 5단계 0개/);
+    assert.deepEqual(await page.locator('.stage-bar i').evaluateAll(els => els.map(e => e.className)), ['stage-0', 'stage-1', 'stage-2']); const legend = await page.locator('.stage-legend').innerText(); assert.match(legend, /1단계 1/); assert.match(legend, /2단계 1/);
+    assert.deepEqual(await page.locator('[data-lesson="albatross-c2-lesson-03"] .mastery-bar i').evaluateAll(els => els.map(e => e.className)), ['is-building', 'is-review', 'is-unseen']); assert.equal(await page.locator('[data-lesson="albatross-c2-lesson-03"] .mastery-bar').getAttribute('aria-label'), '40개 중 굳음 0개, 다지는 중 1개, 복습 필요 1개, 미학습 38개');
+    assert.equal(await page.locator('[data-lesson="albatross-c2-lesson-03"]').getAttribute('aria-describedby'), 'action-albatross-c2-lesson-03 mastery-albatross-c2-lesson-03'); assert.equal(await page.locator('#mastery-albatross-c2-lesson-03').count(), 1); assert.equal(await page.locator('[data-lesson="albatross-c2-lesson-04"]').getAttribute('aria-describedby'), 'action-albatross-c2-lesson-04');
+    assert.equal(await page.locator('.level-button[data-level="C2"] .level-bar i:not(.is-unseen)').count(), 2); assert.match(await page.locator('.level-button[data-level="C2"]').textContent(), /굳음 0개, 다지는 중 1개, 복습 필요 1개/); assert.equal(await page.locator('.level-button[data-level="C1"] .sr-only').count(), 0);
     assert.equal(await page.locator('[data-lesson="albatross-c2-lesson-03"] .lesson-card-action').innerText(), '이어서 학습할 단어 선택');
 
     await page.evaluate(id => chooseLevel(lessons.find(l => l.id === id).level), "albatross-c2-lesson-03").then(() => page.locator('[data-lesson="albatross-c2-lesson-03"]').click());
@@ -98,6 +109,7 @@ const pageURL = pathToFileURL(path.join(root, 'albatross-c2-lesson-03.html')).hr
     await page.locator('#back-to-lessons').click();
     await page.locator('#reset-progress').click();
     assert.match(await page.locator('.library-stats-row').innerText(), /0 \/ 950 단어 학습/);
+    assert.match(await page.locator('.stage-headline').innerText(), /0 \/ 950/); assert.equal(await page.locator('.stage-bar i').count(), 1); // 초기화 뒤 분포 막대도 트랙만 남아요.
     await page.reload();
     assert.match(await page.locator('.library-stats-row').innerText(), /0 \/ 950 단어 학습/);
     await page.evaluate(() => chooseLevel('C2')); assert.equal(await page.locator('.mastery.is-empty').count(), 10);
@@ -123,6 +135,7 @@ const pageURL = pathToFileURL(path.join(root, 'albatross-c2-lesson-03.html')).hr
     await snap(page, { path: path.join(__dirname, 'screenshots', 'persistence-selection-390.png'), fullPage: true });
     await page.locator('#back-to-lessons').click();
     await snap(page, { path: path.join(__dirname, 'screenshots', 'persistence-library-390.png'), fullPage: true });
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'library overflow at 390');
 
     assert.deepEqual(errors, []);
     console.log('PASS: file:// storage, mastery bars, filters, search, session resume across reload, reset, corrupt/stale data recovery.');

@@ -49,12 +49,17 @@ const PROBE = sel => {
       await page.evaluate(() => chooseLevel('C2')); // 카드는 레벨을 고른 뒤에 나온다
       // 주요 표면·글자 조합이 모두 본문 기준(4.5:1) 위에 있어야 한다.
       for (const sel of ['.level-button', '.level-hint']) { const probe = await page.evaluate(PROBE, sel); assert(probe && contrast(probe.fg, probe.bg) >= 4.5, `${scheme} ${sel} contrast`); }
-      for (const sel of ['.lesson-card-title', '.lesson-card-count', '.lesson-words span', '.library-stats-row', '.library-stats-note', '.theme-toggle', '.library-intro']) {
+      for (const sel of ['.lesson-card-title', '.lesson-card-count', '.lesson-words span', '.library-stats-row', '.library-stats-note', '.theme-toggle', '.library-intro', '.stage-headline', '.stage-legend']) {
         const probe = await page.evaluate(PROBE, sel);
         assert(probe, `missing ${sel}`);
         const value = contrast(probe.fg, probe.bg);
         assert(value >= 4.5, `${scheme} ${sel}: ${value.toFixed(2)}:1`);
       }
+      // 기억 단계 램프(1~5단계)는 카드 바탕과 1.4:1 이상 떨어지고 이웃 칸과 색이 달라야 해요. 미학습 견본은 테두리로 보여요.
+      const chartBg = await page.evaluate(() => getComputedStyle(document.querySelector('.stage-chart')).backgroundColor);
+      const swatches = await page.evaluate(() => [1, 2, 3, 4, 5].map(n => getComputedStyle(document.querySelector(`.stage-legend .stage-dot.stage-${n}`)).backgroundColor));
+      swatches.forEach((color, i) => { assert(contrast(color, chartBg) > 1.4, `${scheme} stage-${i + 1} swatch vs card`); if (i) assert.notEqual(color, swatches[i - 1], `${scheme} stage-${i}/stage-${i + 1} must differ`); });
+      assert.equal(await page.locator('.stage-bar i').count(), 1, 'fresh page shows only the unseen track'); assert.notEqual(await page.evaluate(() => getComputedStyle(document.querySelector('.stage-legend .stage-dot.stage-0')).borderTopColor), chartBg, 'unseen swatch keeps a visible border');
       // 브라우저 상단 바 색(theme-color)이 실제 페이지 배경과 같아야 한다.
       assert.equal(await page.evaluate(() => document.getElementById('theme-color').content), bodyBg, `theme-color must match the ${scheme} background`);
 
@@ -62,6 +67,11 @@ const PROBE = sel => {
       const cardBg = await page.evaluate(() => getComputedStyle(document.querySelector('.lesson-card')).backgroundColor);
       assert.notEqual(cardBg, bodyBg, 'card surface must differ from the page');
       if (scheme === 'dark') assert(channel(rgb(cardBg)) > channel(rgb(bodyBg)), 'dark cards must sit above the page');
+      // 눌린 레벨 버튼(초록 바탕)에서는 굳음 칸이 글자색으로, 트랙은 테두리만 남아야 해요(light/dark 모두).
+      await page.evaluate(id => { const lesson = lessons.find(l => l.id === id); progress.stats[id] = { [lesson.words[0].word]: { seen: 5, correct: 5, wrong: 0, unsure: false, lastResult: true, last: '2026-01-01', box: 5, due: '2099-01-01' } }; chooseLevel('C2'); }, LESSON);
+      const pressed = await page.evaluate(() => { const button = document.querySelector('.level-button[aria-pressed="true"]'); return { fill: getComputedStyle(button.querySelector('.level-bar .is-mastered')).backgroundColor, text: getComputedStyle(button).color, bg: getComputedStyle(button).backgroundColor, track: getComputedStyle(button.querySelector('.level-bar')).backgroundColor }; });
+      assert.equal(pressed.fill, pressed.text, `${scheme} pressed level: solid segment uses the button text colour`); assert.notEqual(pressed.fill, pressed.bg); assert.equal(pressed.track, 'rgba(0, 0, 0, 0)', 'pressed track is outlined, not filled');
+      await page.evaluate(() => { progress.stats = {}; chooseLevel('C2'); }); assert.equal(await page.locator('.mastery.is-empty').count(), 10); // 이후 40단어 학습 흐름은 기록 없는 상태에서 시작해요.
       await snap(page, { path: path.join(__dirname, 'screenshots', `visuals-library${tag}.png`), fullPage: true });
 
       // --- 단어 스트립: 숨어 있던 사이드바 목록이 학습 화면에 가로로 살아 있어야 한다.
