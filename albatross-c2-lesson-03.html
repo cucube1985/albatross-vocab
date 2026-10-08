@@ -44189,11 +44189,28 @@
       const help=document.getElementById('mode-help');
       if(help && studyMode==='listen') help.textContent=modeHelpText('listen');
     }
+    // 기기에 있는 음성 중 가장 자연스러운 것을 골라요. Edge 의 'Online (Natural)' 신경망 음성(GitHub 의 edge-tts 가 쓰는 SunHi·InJoon 등)이 1순위,
+    // Chrome·안드로이드의 Google 음성, 아이폰의 향상된(Enhanced) 음성이 그다음이에요. Windows 의 옛 음성(Heami 등)은 다른 음성이 없을 때만 써요.
+    function voiceScore(voice) {
+      const name=voice.name||'';
+      let score=/natural|neural/i.test(name)?100:/google/i.test(name)?80:/enhanced|premium|향상|고품질/i.test(name)?60:voice.localService===false?40:0;
+      if(/desktop/i.test(name)) score-=10; // SAPI 데스크톱 음성은 같은 기계음 중에서도 뒤로 미뤄요.
+      return score;
+    }
+    // 점수가 같으면 prefer(예: 영국 영어)에 맞는 음성을 앞세워요. 정렬 전 목록 순서는 브라우저가 준 순서 그대로예요.
+    function bestVoice(voices,pattern,prefer=null) {
+      const list=voices.filter(voice=>pattern.test(voice.lang||''));
+      return list.sort((a,b)=>voiceScore(b)-voiceScore(a) || (prefer?Number(prefer.test(b.lang||''))-Number(prefer.test(a.lang||'')):0))[0]||null;
+    }
+    // 인터넷이 끊기면 온라인 음성은 실패해요. 그때 다시 읽을 기기 안 음성도 함께 골라 둬요.
+    let englishLocalVoice=null, koreanLocalVoice=null;
     function pickVoice() {
       if(!speech) return;
-      const voices=speech.getVoices()||[];
-      englishVoice=voices.find(voice=>/^en[-_]GB/i.test(voice.lang)) || voices.find(voice=>/^en[-_]US/i.test(voice.lang)) || voices.find(voice=>/^en/i.test(voice.lang)) || null;
-      koreanVoice=voices.find(voice=>/^ko/i.test(voice.lang)) || null;
+      const voices=speech.getVoices()||[], local=voices.filter(voice=>voice.localService!==false);
+      englishVoice=bestVoice(voices,/^en/i,/^en[-_]GB/i);
+      koreanVoice=bestVoice(voices,/^ko/i);
+      englishLocalVoice=bestVoice(local,/^en/i,/^en[-_]GB/i);
+      koreanLocalVoice=bestVoice(local,/^ko/i);
       syncListenButton(); // 선택 화면이 떠 있으면 듣기 버튼 상태를 바로 맞춰요.
     }
     if(speech) { pickVoice(); speech.addEventListener('voiceschanged',pickVoice); }
@@ -44213,6 +44230,15 @@
             if(voice) { utterance.voice=voice; utterance.lang=voice.lang; } else utterance.lang=item.lang==='ko'?'ko-KR':'en-US';
             utterance.rate=item.rate||0.92;
             if(item.pitch) utterance.pitch=item.pitch;
+            // 온라인(신경망) 음성이 인터넷 문제로 실패하면 같은 문장을 기기 안 음성으로 한 번 더 읽어요. 우리가 끊은 경우(새 읽기·화면 이동)는 다시 읽지 않아요.
+            const fallback=item.lang==='ko'?koreanLocalVoice:englishLocalVoice;
+            if(voice && voice.localService===false && fallback) utterance.onerror=event=>{
+              if(token!==speechToken || event.error==='canceled' || event.error==='interrupted') return;
+              const retry=new SpeechSynthesisUtterance(item.text);
+              retry.voice=fallback; retry.lang=fallback.lang; retry.rate=utterance.rate;
+              if(item.pitch) retry.pitch=item.pitch;
+              speech.speak(retry);
+            };
             speech.speak(utterance);
           }
         } catch(error) { /* 음성을 지원하지 않는 환경도 있어요. */ }
