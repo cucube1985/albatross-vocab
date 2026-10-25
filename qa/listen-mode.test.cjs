@@ -62,11 +62,11 @@ const LATE = () => { window.__voices = []; };
     await page.goto(pageURL);
     await openLesson();
 
-    // --- 선택 화면: 영어 음성이 있으면 '듣고 뜻 고르기' 버튼이 켜진 채로 '예문 빈칸'과 '섞어서' 사이에 있다.
+    // --- 선택 화면: 영어 음성이 있으면 '듣고 뜻 고르기' 버튼이 켜진 채로 '문장 완성'과 '섞어서' 사이에 있다.
     assert.equal(await mode('listen').count(), 1, 'the listen button exists when speech + english voice are present');
     assert(await mode('listen').isEnabled(), 'enabled with an english voice');
     assert.equal(await mode('listen').innerText(), '듣고 뜻 고르기');
-    assert.deepEqual(await page.locator('[data-selection-action="mode"]').evaluateAll(els => els.map(e => e.dataset.mode)), ['en', 'ko', 'cloze', 'listen', 'mix']);
+    assert.deepEqual(await page.locator('[data-selection-action="mode"]').evaluateAll(els => els.map(e => e.dataset.mode)), ['en', 'ko', 'cloze', 'sentence', 'listen', 'mix']);
     assert.equal(await mode('listen').getAttribute('aria-pressed'), 'false');
     assert.equal(await mode('en').getAttribute('aria-pressed'), 'true');
 
@@ -271,7 +271,7 @@ const LATE = () => { window.__voices = []; };
     await noVoice.evaluate(id => chooseLevel(lessons.find(l => l.id === id).level), LESSON).then(() => noVoice.locator(`[data-lesson="${LESSON}"]`).click());
     assert.equal(await quietMode('listen').count(), 0, 'no listen button without speech');
     assert.equal(await quietMode('en').getAttribute('aria-pressed'), 'true', 'saved listen is not restored without speech');
-    assert.deepEqual(await noVoice.locator('[data-selection-action="mode"]').evaluateAll(els => els.map(e => e.dataset.mode)), ['en', 'ko', 'cloze', 'mix']);
+    assert.deepEqual(await noVoice.locator('[data-selection-action="mode"]').evaluateAll(els => els.map(e => e.dataset.mode)), ['en', 'ko', 'cloze', 'sentence', 'mix']);
     assert.equal(await noVoice.evaluate(() => { setStudyMode('listen'); return studyMode; }), 'en', 'setStudyMode rejects listen without speech');
     await noVoice.evaluate(() => setDraftSelection([0, 1]));
     await noVoice.locator('[data-selection-action="start"]').click();

@@ -723,6 +723,13 @@
       .learn-nav .secondary, .learn-nav .primary { flex:1 1 0; min-width:0; justify-content:center; gap:8px; padding-inline:10px; white-space:nowrap; }
       .learn-card .speak-button { scroll-margin-bottom:calc(100px + env(safe-area-inset-bottom,0px)); }
     }
+    /* --- 10단계: 문장 완성 — 피드백에서 빈칸을 채운 문장과 문장 속 꼴을 보여 줘요 --- */
+    .sentence-answer { margin:22px 0 20px; padding:16px 18px; border:1px solid var(--line); border-radius:10px; background:var(--neutral-040); }
+    .sentence-answer p { margin:0; font-size:16px; line-height:1.85; color:var(--ink); }
+    .sentence-fill { font-weight:700; color:var(--green); border-bottom:2px solid var(--gold-040); }
+    .sentence-answer .sentence-form { margin-top:6px; font-size:15px; color:var(--muted); word-break:keep-all; }
+    .sentence-form b { color:var(--ink); font-weight:650; }
+    .sentence-answer .speak-row { margin:12px 0 0; }
   </style>
 </head>
 <body>
@@ -18468,6 +18475,10 @@
           "relationNote": "discovery는 새로운 것을 알아내는 일 자체를 말하고, breakthrough는 막혀 있던 문제를 뚫어 내는 결정적 진전이라는 느낌이 강해요. setback은 오히려 일이 뒤로 밀리는 차질이에요.",
           "example": "Scientists made a major breakthrough in cancer treatment last year.",
           "translation": "과학자들은 작년에 암 치료에서 중대한 돌파구를 마련했다.",
+          "sentence": {
+            "text": "Informing the public about scientific breakthroughs has never been easy.",
+            "answer": "breakthroughs"
+          },
           "sources": [
             [
               "Etymonline · 어원",
@@ -18612,6 +18623,10 @@
           "relationNote": "memorable은 오래 기억에 남는다는 일반적인 말이에요. catchy는 주로 노래, 광고 문구처럼 한 번 들으면 귀에 붙는 것에 써요.",
           "example": "The ad used a catchy melody that everyone started humming.",
           "translation": "그 광고는 누구나 따라 흥얼거리게 된, 귀에 착 감기는 멜로디를 썼다.",
+          "sentence": {
+            "text": "Scientists try to pique people's interest in the new discoveries by using catchy terms.",
+            "answer": "catchy"
+          },
           "sources": [
             [
               "Etymonline · 어원",
@@ -18754,6 +18769,10 @@
           "relationNote": "flagrant와 glaring은 잘못이 누가 봐도 뻔하다는 점에서 가까워요. gross는 이 밖에 ‘총(세전)’, 구어에서 ‘역겨운’이라는 뜻도 있으니 문맥으로 구별해요.",
           "example": "The report contained a gross error that misled investors.",
           "translation": "그 보고서에는 투자자들을 오도한 중대한 오류가 있었다.",
+          "sentence": {
+            "text": "Comparing finding the Higgs boson to finding God was a(n) gross exaggeration.",
+            "answer": "gross"
+          },
           "sources": [
             [
               "Etymonline · 어원",
@@ -19035,6 +19054,10 @@
           "relationNote": "type은 가장 넓은 뜻의 ‘종류’라서 품종보다 범위가 커요. strain과 cultivar는 동식물의 계통·품종을 가리키는 전문적인 말이고, 품종이라는 뜻에는 짝이 되는 반의어가 없어요.",
           "example": "This rare variety of apple grows only in a few mountain villages.",
           "translation": "이 희귀한 사과 품종은 몇몇 산골 마을에서만 자란다.",
+          "sentence": {
+            "text": "As an experiment, scientists imported African bee varieties which produced more honey.",
+            "answer": "varieties"
+          },
           "sources": [
             [
               "Etymonline · 어원",
@@ -19084,6 +19107,10 @@
           "relationNote": "considerably와 거의 같은 뜻이에요. significantly는 의미 있을 만큼 크다는 느낌이 더해지고, slightly와 marginally는 변화가 작을 때 써요.",
           "example": "Energy bills will increase substantially if the new tax is approved.",
           "translation": "새 세금이 승인되면 에너지 요금이 상당히 오를 것이다.",
+          "sentence": {
+            "text": "The demand for bananas has increased substantially since the broadcast about the effectiveness of them.",
+            "answer": "substantially"
+          },
           "sources": [
             [
               "Etymonline · substantial 어원",
@@ -19186,6 +19213,10 @@
           "relationNote": "mix-breed는 사전에 잘 오르지 않는 드문 표현이고, 보통은 cross-breed나 interbreed를 써요. hybridize는 잡종을 만든다는 좀 더 과학적인 말이고, inbreed는 가까운 혈통끼리 교배한다는 대조 표현이에요.",
           "example": "Farmers cross-breed local cattle with imported bulls to get stronger calves.",
           "translation": "농부들은 더 튼튼한 송아지를 얻으려고 토종 소를 수입 황소와 이종 교배한다.",
+          "sentence": {
+            "text": "Scientists cross-bred African bees with European bees.",
+            "answer": "cross-bred"
+          },
           "sources": [
             [
               "Etymonline · 어원",
@@ -19222,6 +19253,10 @@
           "relationNote": "beehive는 hive와 같은 뜻으로, 특히 사람이 만든 벌통을 떠올리게 해요. 사물을 가리키는 말이라 반의어는 없어요.",
           "example": "The beekeeper opened the hive carefully to check on the queen.",
           "translation": "양봉가는 여왕벌을 살피려고 벌집을 조심스럽게 열었다.",
+          "sentence": {
+            "text": "The hive is usually filled with bees.",
+            "answer": "hive"
+          },
           "sources": [
             [
               "Etymonline · 어원",
@@ -19382,6 +19417,10 @@
           "relationNote": "oppose는 생각이나 계획에 반대한다는 뜻이라 저항의 뜻에서만 가까워요. withstand는 압력이나 공격을 버텨 낸다는 뜻이고, give in과 yield는 버티지 못하고 굴복한다는 반대 표현이에요.",
           "example": "It is hard to resist temptation when snacks sit right on your desk.",
           "translation": "간식이 바로 책상 위에 놓여 있으면 유혹을 견디기 어렵다.",
+          "sentence": {
+            "text": "The story of an army of deadly bees relentlessly marching north was too good for the audience to resist.",
+            "answer": "resist"
+          },
           "sources": [
             [
               "Etymonline · 어원",
@@ -19427,6 +19466,10 @@
           "relationNote": "casualty는 사망자뿐 아니라 부상자까지 포함하는 ‘사상자’라서 death toll과 완전히 같지는 않아요. fatalities는 사망자만 가리켜서 더 가까워요.",
           "example": "Officials released a new estimate of the death toll after the earthquake.",
           "translation": "당국은 지진 후 사망자 수에 대한 새로운 추정치를 발표했다.",
+          "sentence": {
+            "text": "Each killer bee attack is guaranteed to generate news headlines, but the actual death toll has been small.",
+            "answer": "death toll"
+          },
           "sources": [
             [
               "Etymonline · toll 어원",
@@ -19476,6 +19519,10 @@
           "relationNote": "be overshadowed는 더 큰 것에 가려 주목받지 못한다는 뜻이에요. pale은 주로 pale in comparison 꼴로 비교했을 때 초라해 보인다는 느낌을 줘요.",
           "example": "Last year's sales pale in comparison with this year's record figures.",
           "translation": "작년 매출은 올해의 기록적인 수치에 비하면 무색하다.",
+          "sentence": {
+            "text": "The bees have killed about 1,000 people, but that figure pales in comparison to the 600,000 people killed annually by malaria-infected mosquitoes.",
+            "answer": "pales"
+          },
           "sources": [
             [
               "Etymonline · 어원",
@@ -19575,6 +19622,10 @@
           "relationNote": "insinuate는 주로 불쾌하거나 부정적인 내용을 은근히 비칠 때 써서 imply보다 부정적인 느낌이에요. infer는 듣는 쪽이 추론하는 것이라 imply와 방향이 반대예요.",
           "example": "I did not mean to imply that your essay was poorly written.",
           "translation": "당신의 에세이가 형편없다는 뜻을 내비치려던 것은 아니었다.",
+          "sentence": {
+            "text": "Although she was smiling, the judge's comment implied that the performance was terrible.",
+            "answer": "implied"
+          },
           "sources": [
             [
               "Etymonline · 어원",
@@ -19771,6 +19822,10 @@
           "relationNote": "on purpose는 일상 회화에서 흔히 쓰는 표현이고, deliberately는 조금 더 격식 있고 계획적인 느낌이 있어요.",
           "example": "He deliberately ignored my messages for the whole week.",
           "translation": "그는 일주일 내내 고의로 내 메시지를 무시했다.",
+          "sentence": {
+            "text": "Pop scientists want to gain more public attention, so they deliberately write in a way that makes science fun.",
+            "answer": "deliberately"
+          },
           "sources": [
             [
               "Etymonline · deliberate 어원",
@@ -19878,6 +19933,10 @@
           "relationNote": "keep up with는 속도나 변화를 따라간다는 넓은 뜻이고, keep abreast of는 특히 최신 정보와 소식을 꾸준히 챙긴다는 격식 있는 표현이에요.",
           "example": "Investors need to keep abreast of changes in interest rates.",
           "translation": "투자자들은 금리 변화에 뒤처지지 않도록 해야 한다.",
+          "sentence": {
+            "text": "Some people just want to keep abreast of the latest scientific findings.",
+            "answer": "keep abreast"
+          },
           "sources": [
             [
               "Etymonline · abreast 어원",
@@ -20070,6 +20129,10 @@
           "relationNote": "details는 가장 일반적인 말이고, particulars는 좀 더 격식 있게 개별 항목을 가리켜요. specifics는 논의에서 따져야 할 구체적인 부분을 강조해요.",
           "example": "We will agree on the budget first and discuss specifics next week.",
           "translation": "우리는 먼저 예산에 합의한 뒤 다음 주에 세부 사항을 논의할 것이다.",
+          "sentence": {
+            "text": "The guide explained the specifics to the visitors, so that they wouldn't have to read it from the brochures.",
+            "answer": "specifics"
+          },
           "sources": [
             [
               "Etymonline · specific 어원",
@@ -20225,6 +20288,10 @@
           "relationNote": "convincing은 남을 설득하는 힘을, believable은 사실로 믿길 만함을 강조해요. reliable은 꾸준히 믿고 의지할 수 있다는 뜻이라 정보원을 말할 때 credible과 자주 겹쳐요.",
           "example": "Journalists must check every claim against a credible information source.",
           "translation": "기자는 모든 주장을 믿을 만한 정보원과 대조해 확인해야 한다.",
+          "sentence": {
+            "text": "The detective started to look for a(n) credible witness for the case.",
+            "answer": "credible"
+          },
           "sources": [
             [
               "Etymonline · 어원",
@@ -20278,6 +20345,10 @@
           "relationNote": "famous는 널리 알려졌다는 뜻에 그치지만, renowned와 celebrated는 실력이나 업적으로 존경받는다는 느낌이 더 강해요. eminent는 특히 학계나 전문 분야의 권위를 강조해요.",
           "example": "Paris is renowned for its museums, cafes, and fashion houses.",
           "translation": "파리는 박물관, 카페, 패션 하우스로 명성이 높다.",
+          "sentence": {
+            "text": "Taylor was a(n) renowned chef who was often invited as a live guest for cooking channels.",
+            "answer": "renowned"
+          },
           "sources": [
             [
               "Etymonline · renown 어원",
@@ -20403,6 +20474,10 @@
           "relationNote": "criticism은 비판·비평 전반을 가리키는 넓은 말이라 작품 한 편에 대한 글인 review와 완전히 같지는 않아요. critique는 작품을 분석해 평가하는 글이라 더 가깝고, 뚜렷한 반의어는 없어요.",
           "example": "Her first novel got a glowing review in the weekend paper.",
           "translation": "그녀의 첫 소설은 주말 신문에 실린 논평에서 극찬을 받았다.",
+          "sentence": {
+            "text": "As one book review puts it, Hawking's book \"marries a child's wonder to a genius's intellect.\"",
+            "answer": "review"
+          },
           "sources": [
             [
               "Etymonline · 어원",
@@ -20448,6 +20523,10 @@
           "relationNote": "equality는 수학에서 두 값이 같다는 관계나 그런 식(등식)을 가리키지만, 일상에서는 ‘평등’이라는 뜻으로 훨씬 많이 써요. inequality는 두 값의 크고 작음을 나타내는 부등식이에요. formula는 값을 구하는 규칙(공식)이고, equation은 등호로 두 값이 같음을 나타낸 식이에요.",
           "example": "The students had to solve a mathematical equation with two unknowns.",
           "translation": "학생들은 미지수가 두 개인 방정식을 풀어야 했다.",
+          "sentence": {
+            "text": "The math equation was simple, but it was difficult for Susan who didn't like numbers.",
+            "answer": "equation"
+          },
           "sources": [
             [
               "Etymonline · 어원",
@@ -20635,6 +20714,10 @@
           "relationNote": "common은 흔하고 자주 일어난다는 뜻이 강해서 general과 완전히 같지는 않아요. general은 예외가 적고 대다수에 해당한다는 느낌이고, specific은 하나에 한정된다는 반대 뜻이에요.",
           "example": "The general opinion among voters is that taxes are too high.",
           "translation": "유권자들 사이의 일반적인 의견은 세금이 너무 높다는 것이다.",
+          "sentence": {
+            "text": "No smoking inside the building is a(n) general rule in public.",
+            "answer": "general"
+          },
           "sources": [
             [
               "Etymonline · 어원",
@@ -20836,6 +20919,10 @@
           "relationNote": "unattainable은 이루거나 얻을 수 없다는 비유적 뜻만 있어요. out of reach는 물리적으로 닿지 않는다는 뜻과 비유적 뜻을 모두 갖고, within reach는 정반대 표현이에요.",
           "example": "For many young couples, a home in the city is now out of reach.",
           "translation": "많은 젊은 부부에게 도시의 집은 이제 손이 닿지 않는 꿈이 되었다.",
+          "sentence": {
+            "text": "The mother's medicines were placed out of reach of the children lest they eat them.",
+            "answer": "out of reach"
+          },
           "sources": [
             [
               "Etymonline · reach 어원",
@@ -43966,8 +44053,14 @@
         else if(kind==='new' && (!stat || !stat.seen)) ids.push(index);
         else if(kind==='wrong' && stat && stat.lastResult===false) ids.push(index);
         else if(kind==='unsure' && stat && stat.unsure===true) ids.push(index);
+        else if(kind==='sentence' && sentenceParts(entry)) ids.push(index);
       });
       return ids;
+    }
+    // 문장 세트가 있는 수업에서만 '문장 있는 단어' 빠른 선택을 보여 줘요(문장 완성으로 풀 단어를 한 번에 고르게).
+    function sentenceButtonHTML() {
+      const count=filterIds('sentence').length;
+      return count?`<button type="button" class="secondary is-filter" data-selection-action="filter" data-filter="sentence" aria-pressed="false">문장 있는 단어 ${count}개</button>`:'';
     }
     function filterButtonsHTML() {
       return FILTERS.map(([kind,label])=>{
@@ -44048,10 +44141,11 @@
       ['en','영어 뜻 고르기','단어를 보고 영어 설명을 골라요. 뜻을 영어로 이해하는 연습이에요.'],
       ['ko','뜻 → 영단어','한글 뜻을 보고 영어 단어를 떠올려요. 쓰기·말하기로 이어지는 방향이에요.'],
       ['cloze','예문 빈칸','문장의 빈칸에 들어갈 단어를 골라요. 실제 쓰임을 함께 익혀요.'],
+      ['sentence','문장 완성','준비된 문장의 빈칸에 알맞은 말을 골라요. 보기는 문장에 맞게 바뀐 꼴(varieties, implied 등)이라 뜻과 쓰임을 함께 봐야 해요.'],
       ['listen','듣고 뜻 고르기','단어를 소리로만 듣고 한글 뜻을 골라요. 철자는 보이지 않아요. 자동 읽기가 꺼져 있어도 문제는 한 번 읽어줘요. 다시 들으려면 ♪ 다시 듣기 버튼이나 S 키를 눌러요.'],
       ['mix','섞어서','여러 방식을 번갈아 내요. 한 방향으로만 굳는 걸 막아줘요.']
     ];
-    const QUESTION_MODES=['en','ko','cloze','listen'];
+    const QUESTION_MODES=['en','ko','cloze','sentence','listen'];
     let studyMode='en';
     // 음성 합성이 없는 브라우저에서는 저장된 '듣고 뜻 고르기'를 되살리지 않아요(버튼도 안 보이니까). const speech 는 아래에서 선언되므로 여기서는 window 로 봐요.
     try { const saved=window.localStorage.getItem(MODE_KEY); if(MODES.some(entry=>entry[0]===saved) && (saved!=='listen' || window.speechSynthesis)) studyMode=saved; } catch(error) { /* 기본값을 써요. */ }
@@ -44060,8 +44154,15 @@
     // 듣기 버튼이 꺼져 있을 때는 왜 못 쓰는지, 그동안 어떤 방식으로 내는지를 도움말에 같이 적어요.
     function modeHelpText(value) {
       if(value==='listen' && !listenReady()) return '영어 음성이 없어요. 브라우저에 영어 음성이 준비되면 버튼이 켜지고, 그동안은 영어 뜻 고르기로 내요.';
+      // 문장 완성은 문장 세트가 있는 단어에만 나와요. 수업마다 몇 개인지, 없으면 어느 수업에서 쓸 수 있는지 알려 줘요.
+      if(value==='sentence') {
+        const count=sentenceCount();
+        if(!count) return `이 수업에는 아직 문장 세트가 없어요. 지금은 ${lessons.filter(lesson=>lesson.words.some(sentenceParts)).map(lesson=>lesson.title).join(', ')}에서 쓸 수 있고, 여기서는 영어 뜻 고르기로 내요.`;
+        if(count<words.length) return `${modeEntry(value)[2]} 이 수업은 문장이 준비된 ${count}개 단어에만 나오고, 나머지는 영어 뜻 고르기로 내요. 빠른 선택의 ‘문장 있는 단어’로 한 번에 고를 수 있어요.`;
+      }
       return modeEntry(value)[2];
     }
+    function sentenceCount() { return (words||[]).filter(sentenceParts).length; }
     function setStudyMode(value) {
       if(!MODES.some(entry=>entry[0]===value) || (value==='listen' && !speech)) return; // 음성 합성이 없으면 듣기 모드는 고를 수 없어요.
       studyMode=value;
@@ -44074,9 +44175,11 @@
     }
     function modePickerHTML() {
       // 음성 합성이 없으면 듣기 버튼을 아예 내지 않고, 영어 음성이 아직 없으면 꺼 둬요(음성 목록이 늦게 오면 syncListenButton 이 제자리에서 켜요).
+      // 문장 완성은 이 수업에 문장 세트가 하나도 없으면 꺼 둬요(도움말이 쓸 수 있는 수업을 알려 줘요).
       const buttons=MODES.filter(([value])=>value!=='listen' || speech).map(([value,label])=>{
-        const off=value==='listen' && !listenReady();
-        return `<button type="button" class="secondary is-mode" data-selection-action="mode" data-mode="${value}" aria-pressed="${studyMode===value}"${off?' disabled title="영어 음성이 없어요"':''}>${label}</button>`;
+        const off=value==='listen'?!listenReady():value==='sentence'?!sentenceCount():false;
+        const why=value==='listen'?'영어 음성이 없어요':'이 수업에는 아직 문장 세트가 없어요';
+        return `<button type="button" class="secondary is-mode" data-selection-action="mode" data-mode="${value}" aria-pressed="${studyMode===value}"${off?` disabled title="${why}"`:''}>${label}</button>`;
       }).join('');
       return `<div class="mode-picker" role="group" aria-label="출제 방식">
           <span class="mode-picker-label">출제 방식</span>
@@ -44095,6 +44198,18 @@
       if(at>0 && /[a-z]/.test(lower[at-1])) return null;
       return [example.slice(0,at), example.slice(at+entry.word.length)];
     }
+    // 문장 완성: 데이터의 sentence {text, answer} 에서 답을 빈칸으로 바꿔요. 답은 문장 속 꼴 그대로(varieties, pales)라 표제어와 다를 수 있어요.
+    // 다른 단어에 붙은 자리(general 이 generally 속에 있는 경우 등)는 건너뛰고, 앞뒤가 글자·하이픈이 아닌 첫 자리를 빈칸으로 써요.
+    function sentenceParts(entry) {
+      const set=entry && entry.sentence, text=set && set.text, answer=set && set.answer;
+      if(!text || !answer) return null;
+      for(let at=text.indexOf(answer); at>=0; at=text.indexOf(answer,at+1)) {
+        if(!/[A-Za-z-]/.test(text[at-1]||'') && !/[A-Za-z-]/.test(text[at+answer.length]||'')) return [text.slice(0,at), text.slice(at+answer.length)];
+      }
+      return null;
+    }
+    // 문장 완성의 보기 후보: 같은 수업(오답 노트면 원래 수업)에서 문장 세트가 있는 다른 단어들이에요.
+    function sentencePool(entry) { return optionPool(entry).filter(other=>other.word!==entry.word && sentenceParts(other)); }
     // 보기용 단어 풀: 오답 노트에서는 노트가 아니라 그 단어의 원래 수업 전체에서 뽑아요(노트가 두세 개뿐이면 보기를 못 만드니까).
     function optionPool(entry) {
       const origin=entry.lessonId?lessons.find(lesson=>lesson.id===entry.lessonId):null;
@@ -44104,6 +44219,8 @@
       if(optionPool(entry).length<4) return ['en'];
       const modes=['en','ko'];
       if(clozeParts(entry)) modes.push('cloze');
+      // 문장 완성은 이 단어에 문장 세트가 있고, 보기로 쓸 다른 문장 답이 3개 이상일 때만 내요.
+      if(sentenceParts(entry) && new Set(sentencePool(entry).map(other=>other.sentence.answer.toLowerCase()).filter(answer=>answer!==entry.sentence.answer.toLowerCase())).size>=3) modes.push('sentence');
       // 듣기는 문제를 낼 때마다 다시 확인해요. 음성 목록이 늦게 올 수도(voiceschanged), 수업에 서로 다른 한글 뜻이 모자랄 수도 있으니까요(정답 뜻 말고도 3개는 있어야 보기가 돼요).
       if(listenReady() && new Set(optionPool(entry).map(other=>other.ko)).size>=4) modes.push('listen');
       return modes;
@@ -44132,6 +44249,19 @@
       const rest=usable.filter(other=>other.part!==entry.part);
       const picked=[...sharePart,...rest].slice(0,3);
       return shuffle([{text:entry[key],correct:true},...picked.map(other=>({text:other[key],correct:false}))]);
+    }
+    // 문장 완성의 보기: 정답 + 다른 문장들의 답 3개(모두 문장 속 꼴이라 -s·-ed 같은 겉모양으로는 답이 안 드러나요).
+    // 품사 계열(명사·동사·형용사·부사·관용구)이 같은 답을 먼저 써서 문법만으로 지워지지 않게 하고, 뜻이 같은 짝(isRival)은 빼요.
+    function sentenceOptions(entry) {
+      const lower=value=>String(value).toLowerCase(), answer=entry.sentence.answer;
+      const family=part=>/adverb/.test(part)?'adv':/adjective/.test(part)?'adj':/noun/.test(part)?'noun':/verb/.test(part)?'verb':'other';
+      const pool=sentencePool(entry);
+      const distinct=list=>{ const seen=new Set([lower(answer)]); return list.filter(other=>!seen.has(lower(other.sentence.answer)) && seen.add(lower(other.sentence.answer))); };
+      const clear=distinct(shuffle(pool.filter(other=>!isRival(entry,other))));
+      const usable=clear.length>=3?clear:distinct(shuffle(pool)); // 문장이 아주 적은 수업에서만 예외로 둬요.
+      const same=usable.filter(other=>family(other.part)===family(entry.part));
+      const picked=[...same,...usable.filter(other=>family(other.part)!==family(entry.part))].slice(0,3);
+      return shuffle([{text:answer,correct:true},...picked.map(other=>({text:other.sentence.answer,correct:false}))]);
     }
     // 영어 설명의 문장 틀: to…(동사류) / 명사 / 형용사 / 부사. 같은 틀끼리만 보기로 섞어야 문장 모양으로 답이 드러나지 않아요.
     // 품사보다 설명의 첫머리를 먼저 봐요(unforeseen 은 형용사지만 'something that…'으로 풀려 있어 명사 틀). 'to' 없이 풀린 동사(live up to)는 따로 두어 준비된 오답을 써요.
@@ -44163,10 +44293,10 @@
         <p class="question" id="question-prompt">들리는 단어의 뜻은?</p>`;
       if(mode==='ko') return `<h2 id="screen-title" class="prompt-ko" tabindex="-1">${escapeHTML(entry.ko)}</h2>
         <p class="question" id="question-prompt">이 뜻에 해당하는 영어 단어는?</p>`;
-      if(mode==='cloze') {
-        const [before,after]=clozeParts(entry);
-        return `<h2 id="screen-title" class="cloze-sentence" lang="en" tabindex="-1">${escapeHTML(before)}<span class="cloze-blank" aria-label="빈칸">&nbsp;&nbsp;&nbsp;&nbsp;</span>${escapeHTML(after)}</h2>
-        <p class="question" id="question-prompt">빈칸에 들어갈 단어는?</p>`;
+      if(mode==='cloze' || mode==='sentence') {
+        const [before,after]=mode==='cloze'?clozeParts(entry):sentenceParts(entry);
+        return `<h2 id="screen-title" class="cloze-sentence" lang="en" tabindex="-1">${escapeHTML(before)}<span class="cloze-blank" role="img" aria-label="빈칸">&nbsp;&nbsp;&nbsp;&nbsp;</span>${escapeHTML(after)}</h2>
+        <p class="question" id="question-prompt">${mode==='cloze'?'빈칸에 들어갈 단어는?':'빈칸에 알맞은 말은? 문장에 맞는 꼴로 골라요.'}</p>`;
       }
       return `<h2 id="screen-title" class="word ${entry.word.length>11?'long-word':''}" lang="en" tabindex="-1">${escapeHTML(entry.word)}</h2>
         ${expressionHTML(entry)}
@@ -44329,7 +44459,7 @@
         tone(context,{frequency:261.63,start:0.2,duration:0.4,type:'triangle',volume:0.12,slide:196});
       } catch(error) { /* 무시 */ }
     }
-    // 문제로 넘어갈 때: en 은 단어, ko 는 한글 뜻(단어는 정답이라 안 읽음), cloze 는 생략. listen 은 소리가 곧 문제라 자동 읽기를 꺼 두었어도 한 번은 읽어요.
+    // 문제로 넘어갈 때: en 은 단어, ko 는 한글 뜻(단어는 정답이라 안 읽음), cloze·sentence 는 생략(문장을 읽으면 답이 빠진 채라 어색해요). listen 은 소리가 곧 문제라 자동 읽기를 꺼 두었어도 한 번은 읽어요.
     function autoReadQuestion(entry) {
       if(!speech) return;
       if(state.mode==='listen') { speakSequence([{text:entry.word,lang:'en'}]); return; }
@@ -44337,13 +44467,13 @@
       if(state.mode==='en') speakSequence([{text:entry.word,lang:'en'}]);
       else if(state.mode==='ko') speakSequence([{text:entry.ko,lang:'ko'}]);
     }
-    // 답을 고른 직후: 효과음 → (틀렸으면) "틀렸어요~" → (아직 단어를 못 들은 모드면) 단어.
+    // 답을 고른 직후: 효과음 → (틀렸으면) "틀렸어요~" → (아직 단어를 못 들은 모드면) 단어. 문장 완성은 빈칸을 채운 문장 전체를 읽어요.
     function playFeedback(correct,entry) {
       stopSpeech(); // 보기·뜻을 읽던 중이면 먼저 끊어서 효과음·"틀렸어요~"와 겹치지 않게 해요.
       if(sound.effects) { if(correct) playCorrectSound(); else playWrongSound(); }
       const items=[];
       if(sound.effects && !correct) items.push({text:'틀렸어요~',lang:'ko',rate:0.8,pitch:0.7});
-      if(sound.autoRead && state.mode!=='en') items.push({text:entry.word,lang:'en'});
+      if(sound.autoRead && state.mode!=='en') items.push({text:state.mode==='sentence'?entry.sentence.text:entry.word,lang:'en'});
       if(!items.length) return;
       // 효과음이 먼저 들리도록, 효과음이 없어도 cancel 직후 바로 말하면 잘리는 브라우저가 있어 한 박자 뒤에 시작해요.
       speakLater(items,sound.effects?(correct?650:600):80);
@@ -44539,7 +44669,7 @@
         <div class="selection-toolbar"><span class="selection-total">단어 묶음 전체 ${words.length}개</span><div class="selection-tools"><button type="button" class="secondary" data-selection-action="all">전체 선택</button><button type="button" class="secondary" data-selection-action="none">선택 해제</button></div></div>
         ${modePickerHTML()}
         <div class="quick-selection" role="group" aria-label="단어 빠른 선택">
-          <div class="quick-selection-buttons">${planButtonHTML()}${filterButtonsHTML()}<button type="button" class="secondary" data-selection-action="random">무작위 ${Math.min(10,words.length)}개</button>${Array.from({length:Math.ceil(words.length/10)},(_,block)=>{const start=block*10,end=Math.min(start+10,words.length);return `<button type="button" class="secondary" data-selection-action="range" data-start="${start}" aria-pressed="false">${words[start].number}~${words[end-1].number}번</button>`;}).join('')}</div>
+          <div class="quick-selection-buttons">${planButtonHTML()}${filterButtonsHTML()}${sentenceButtonHTML()}<button type="button" class="secondary" data-selection-action="random">무작위 ${Math.min(10,words.length)}개</button>${Array.from({length:Math.ceil(words.length/10)},(_,block)=>{const start=block*10,end=Math.min(start+10,words.length);return `<button type="button" class="secondary" data-selection-action="range" data-start="${start}" aria-pressed="false">${words[start].number}~${words[end-1].number}번</button>`;}).join('')}</div>
           <p>빠른 선택은 현재 선택을 해당 단어들로 바꿔요. 이후 체크박스로 더하거나 뺄 수 있어요.<br>번호순 묶음을 골라도 문제는 무작위로 나와요. 학습 기록은 이 브라우저에 저장돼요.</p>
           <p class="plan-help">맞히면 기억 단계가 오르고 다음 복습까지의 간격이 1 → 3 → 7 → 14 → 30일로 길어져요. 틀리거나 헷갈림으로 표시하면 1단계로 돌아가 다음 날 다시 만나요.</p>
         </div>
@@ -44792,7 +44922,7 @@
       // 뜻→단어·빈칸에서는 단어 자체가 정답이라 단어 듣기를 내주지 않아요(답이 들려요). 보기 읽기는 네 개가 다 보이므로 괜찮아요. 듣기에서는 단어 듣기가 곧 문제라 questionBodyHTML 의 '다시 듣기'가 맡고, 보기는 한글 뜻이에요.
       const revealsAnswer=state.mode!=='en';
       const listening=state.mode==='listen';
-      state.options=state.mode==='en'?definitionOptions(w):wordOptions(w,listening?'ko':'word');
+      state.options=state.mode==='en'?definitionOptions(w):state.mode==='sentence'?sentenceOptions(w):wordOptions(w,listening?'ko':'word');
       const choiceSpeak=index=>speech?`<button type="button" class="choice-speak" data-action="speak-choice" data-index="${index}" aria-label="${index+1}번 보기 듣기" title="${index+1}번 보기 듣기"><span aria-hidden="true">♪</span></button>`:'';
       screen.innerHTML=`<section class="study-card question-card mode-${state.mode}" aria-labelledby="screen-title">
         <div class="card-top"><span class="eyebrow">WORD ${pad2(state.cursor+1)} / ${pad2(state.queue.length)}</span><span class="mode-chip">${escapeHTML(modeLabel(state.mode))}</span><span class="part" lang="en">${escapeHTML(w.part)}</span></div>
@@ -44848,6 +44978,14 @@
       return `<details class="deep-dive" data-default-open="${open}"${open?' open':''}><summary>어원 · 동의어 · 반대어 보기</summary><div class="origin"><h3 class="section-title">어원 · 이 뜻은 어디서 왔을까요?</h3><div class="origin-root" lang="en">${escapeHTML(w.root)}</div><p>${escapeHTML(w.origin)}</p></div>
         <div class="relations"><div><h3 class="section-title">동의어 · 유사 표현</h3><ul>${relationsList(w.synonyms)}</ul></div><div><h3 class="section-title">반대어 · 대조 표현</h3><ul>${w.antonyms.length?relationsList(w.antonyms):'<li>일반적인 반대어 없음</li>'}</ul></div></div>${synonymHintHTML(w)}<p class="relation-note">${escapeHTML(w.relationNote)}</p></details>`;
     }
+    // 문장 완성 피드백: 빈칸을 채운 문장, 문장 속 꼴이 표제어와 다르면(pales ← pale) 둘을 나란히 보여 줘요.
+    function sentenceAnswerHTML(w) {
+      const parts=sentenceParts(w);
+      if(!parts) return '';
+      const answer=w.sentence.answer;
+      const form=answer.toLowerCase()===w.word.toLowerCase()?'':`<p class="sentence-form">빈칸에 들어간 꼴 <b lang="en">${escapeHTML(answer)}</b> · 학습 단어 <b lang="en">${escapeHTML(w.word)}</b></p>`;
+      return `<div class="sentence-answer"><h3 class="section-title">완성한 문장</h3><p lang="en">${escapeHTML(parts[0])}<strong class="sentence-fill">${escapeHTML(answer)}</strong>${escapeHTML(parts[1])}</p>${form}<div class="speak-row">${speakButtonHTML('sentence','문장 듣기')}</div></div>`;
+    }
     function renderFeedback(selected) {
       const w=currentWord(), correct=selected.correct;
       // 오답 노트에서는 단어가 원래 속한 수업의 출처 문구를 보여줘요.
@@ -44856,7 +44994,8 @@
         <div class="card-top"><span class="feedback-label ${correct?'':'wrong'}"><span class="feedback-icon" aria-hidden="true">${correct?'✓':'↻'}</span>${correct?'정답이에요! 한 단계 더 알아볼까요?':'아쉬워요. 이 뜻으로 기억해 보세요.'}</span><span class="part" lang="en">${escapeHTML(w.part)}</span></div>
         <h2 class="word ${w.word.length>11?'long-word':''}" id="screen-title" tabindex="-1"><span class="sr-only">${correct?'정답':'오답'}: </span><span lang="en">${escapeHTML(w.word)}</span></h2>
         ${expressionHTML(w)}
-        ${correct?'':`<div class="your-answer"><span>${state.mode==='ko'||state.mode==='cloze'?'내가 고른 단어':'내가 고른 뜻'}</span><div lang="${optionLang()}">${escapeHTML(selected.text)}</div>${selected.word?`<p class="your-answer-owner">이 설명은 <b lang="en">${escapeHTML(selected.word)}</b>의 뜻이에요.</p>`:''}</div>`}
+        ${correct?'':`<div class="your-answer"><span>${state.mode==='ko'||state.mode==='cloze'||state.mode==='sentence'?'내가 고른 단어':'내가 고른 뜻'}</span><div lang="${optionLang()}">${escapeHTML(selected.text)}</div>${selected.word?`<p class="your-answer-owner">이 설명은 <b lang="en">${escapeHTML(selected.word)}</b>의 뜻이에요.</p>`:''}</div>`}
+        ${state.mode==='sentence'?sentenceAnswerHTML(w):''}
         <div class="meaning-box"><div class="box-label">${correct?'MEANING':'CORRECT MEANING · 올바른 뜻'}</div><p class="meaning-ko">${escapeHTML(w.ko)}</p><p class="meaning-en" lang="en">${escapeHTML(w.en)}</p>${w.note?`<p class="meaning-note">${escapeHTML(w.note)}</p>`:''}</div>${nextReviewHTML(w)}
         ${correct?`<div class="confidence-box">${confidenceButtonHTML(state.queue[state.cursor])}<p class="confidence-help" role="status" aria-live="polite">${confidenceHelpText(state.queue[state.cursor])}</p></div>`:''}
         ${correct?deepDiveHTML(w):''}
@@ -44911,7 +45050,7 @@
       if(choice) { selectAnswer(Number(choice.dataset.choice)); return; }
       const actionButton=event.target.closest('[data-action]');
       const action=actionButton?.dataset.action;
-      if(action==='speak') { speak(actionButton.dataset.speak==='example'?currentWord().example:currentWord().word); return; }
+      if(action==='speak') { const kind=actionButton.dataset.speak, w=currentWord(); speak(kind==='example'?w.example:kind==='sentence'?w.sentence.text:w.word); return; }
       if(action==='speak-choice') { speakSequence(choiceReadItems(Number(actionButton.dataset.index))); return; }
       if(action==='speak-all') {
         const items=state.mode==='en'?[{text:currentWord().word,lang:'en'}]:[];
