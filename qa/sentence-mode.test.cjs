@@ -34,16 +34,41 @@ const SETS = [
   ['resist', 'resist', 'The story of an army of deadly bees relentlessly marching north was too good for the audience to resist.'],
 ];
 
-// --- 데이터: C1 Lesson 08 의 20개 단어에만, 준 문장 그대로, 답은 문장에 앞뒤가 떨어진 채 정확히 한 번.
+// 사용자가 준 C2 Lesson 08 세트 그대로.
+const C2_LESSON = 'albatross-c2-lesson-08';
+const C2_SETS = [
+  ['stretcher', 'stretcher', 'Bobby was hit badly by the motorcycle, so he was carried to the hospital on a(n) stretcher.'],
+  ['de facto', 'de facto', 'As telecommunication technologies in smartphones evolve, they will become de facto portable health care centers.'],
+  ['panacea', 'panacea', 'My grandmother always tells me to smile because she thinks laughter is an effective panacea.'],
+  ['prognosis', 'prognosis', "Should the patient follow the doctor's advice, his prognosis will not be so bad."],
+  ['pediatric', 'pediatric', 'Joanne was always good with children so she decided to pursue pediatric medicine.'],
+  ['perch', 'perched', 'The view of the black crow perched on the branch of a tree in the middle of the cemetery was quite spooky.'],
+  ['incision', 'incisions', 'Robotic surgeons are able to make tiny incisions that leave much smaller scars.'],
+  ['stethoscope', 'stethoscopes', 'Physicians have been using stethoscopes to listen to our heartbeats for hundreds of years.'],
+  ['intermittent', 'intermittent', 'Bobby is trying out intermittent fasting, but is struggling as his body is used to regular meal times.'],
+  ['jargon', 'jargon', 'Cell phone apps will be able to translate complex medical jargon into an easier vocabulary that everyone can understand.'],
+  ['artery', 'artery', 'A(n) artery is a blood vessel that transports blood from the heart to the rest of the body.'],
+  ['dehydrated', 'dehydrated', 'The dehydrated rabbit finally regained consciousness after the doctor gave it some sweetened water.'],
+  ['embedded', 'embedded', "The lost emperor's magnificent crown consisted of hundreds of embedded jewels."],
+  ['blemish', 'blemish', "A quick scan indicated that the spot on Martha's skin was just a harmless blemish."],
+  ['coronary', 'coronary', 'Removing plaque from coronary arteries will reduce the risk of heart attacks.'],
+  ['telemedicine', 'telemedicine', 'Patients in rural areas no longer have to commute to their nearest hospital thanks to telemedicine.'],
+  ['unembellished', 'unembellished', "The laboratory was located in a(n) unembellished building that didn't even have a reception desk."],
+  ['cardiac', 'cardiac', 'Preventative cardiac care will allow the early detection of heart disease.'],
+  ['sequester', 'sequester', 'The experts recommended the government to sequester COVID-19 patients to prevent further spread.'],
+  ['joystick', 'joystick', 'Doctors are able to steer the nano-robot from a different room using a(n) joystick.'],
+];
+
+// --- 데이터: C1 Lesson 08·C2 Lesson 08 의 20개씩에만, 준 문장 그대로, 답은 문장에 앞뒤가 떨어진 채 정확히 한 번.
 const html = fs.readFileSync(file, 'utf8');
 const OPEN = '<script type="application/json" id="lesson-data">';
 const data = JSON.parse(html.slice(html.indexOf(OPEN) + OPEN.length, html.indexOf('</script>', html.indexOf(OPEN))));
 const withSentence = data.lessons.flatMap(lesson => lesson.words.filter(w => w.sentence).map(w => [lesson.id, w]));
-assert.equal(withSentence.length, 20, 'exactly 20 sentence sets');
-assert(withSentence.every(([id]) => id === LESSON), 'only C1 Lesson 08 has sentences for now');
+assert.equal(withSentence.length, 40, 'exactly 40 sentence sets');
+assert.deepEqual([...new Set(withSentence.map(([id]) => id))].sort(), [LESSON, C2_LESSON].sort(), 'only C1/C2 Lesson 08 have sentences for now');
 const lesson08 = data.lessons.find(l => l.id === LESSON);
-for (const [word, answer, text] of SETS) {
-  const entry = lesson08.words.find(w => w.word === word);
+for (const [lessonId, sets] of [[LESSON, SETS], [C2_LESSON, C2_SETS]]) for (const [word, answer, text] of sets) {
+  const entry = data.lessons.find(l => l.id === lessonId).words.find(w => w.word === word);
   assert(entry, `${word} is in the lesson`);
   assert.deepEqual(entry.sentence, { text, answer }, `${word}: the given sentence verbatim`);
   const keys = Object.keys(entry);
@@ -210,6 +235,29 @@ const SPY = () => {
     assert.equal(notebook.lessonId, LESSON);
     assert(notebook.options.every(o => answers.includes(o)), 'options come from the original lesson');
 
+    // --- C2 Lesson 08: 빠른 선택 20개, 20문제 모두 문장 완성으로 나오고 보기·피드백이 그 수업의 문장 답이다.
+    await page.evaluate(() => showLessons());
+    await open(C2_LESSON);
+    assert(await mode('sentence').isEnabled());
+    assert.match(await page.locator('#mode-help').innerText(), /20개 단어에만/);
+    await page.locator('[data-filter="sentence"]').click();
+    assert.deepEqual(await page.evaluate(() => [...state.draftIds].map(i => words[i].word).sort()), C2_SETS.map(s => s[0]).sort());
+    await page.locator('[data-selection-action="start"]').click();
+    const c2Answers = C2_SETS.map(s => s[1]);
+    for (let n = 0; n < 20; n++) {
+      const q = await page.evaluate(() => ({ mode: state.mode, word: currentWord().word, heading: document.getElementById('screen-title').textContent, options: state.options.map(o => ({ text: o.text, correct: o.correct })) }));
+      const [, answer, text] = C2_SETS.find(s => s[0] === q.word);
+      assert.equal(q.mode, 'sentence', `${q.word}: asked as a sentence`);
+      const at = text.indexOf(answer);
+      assert.equal(q.heading, `${text.slice(0, at)}    ${text.slice(at + answer.length)}`);
+      assert.deepEqual(q.options.filter(o => o.correct).map(o => o.text), [answer]);
+      assert.equal(new Set(q.options.map(o => o.text)).size, 4);
+      assert(q.options.every(o => c2Answers.includes(o.text)), `${q.word}: options from C2 Lesson 08`);
+      await page.locator(`[data-choice="${q.options.findIndex(o => o.correct)}"]`).click();
+      assert.equal(await page.locator('.sentence-answer p[lang="en"]').textContent(), text);
+      if (n < 19) await page.locator('[data-action="next"]').click();
+    }
+
     // --- 폰 폭: 문제·피드백 모두 가로로 넘치지 않는다.
     await page.setViewportSize({ width: 360, height: 780 });
     await page.evaluate(() => showLessons());
@@ -222,7 +270,7 @@ const SPY = () => {
     await snap(page, { path: path.join(__dirname, 'screenshots', 'sentence-feedback-mobile.png'), fullPage: true });
 
     assert.deepEqual(errors, []);
-    console.log('PASS: C1 Lesson 08 carries the 20 given sentence sets verbatim (only there; answer once, standalone; field order kept); "문장 완성" is offered only where sentences exist (off with a help note elsewhere, fallback to English definitions); quick pick selects the 20; all 20 questions blank the in-sentence form, offer 4 distinct in-sentence answers with one correct, same part of speech first, no rivals, no word audio; feedback shows the completed sentence, form note (pales ← pale), reads the sentence, records the headword; feedback survives reload; words without sentences fall back; the wrong notebook keeps the mode; fits 360px.');
+    console.log('PASS: C1 and C2 Lesson 08 carry the 20+20 given sentence sets verbatim (only there; answer once, standalone; field order kept); "문장 완성" is offered only where sentences exist (off with a help note elsewhere, fallback to English definitions); quick pick selects the 20; all 20 questions blank the in-sentence form, offer 4 distinct in-sentence answers with one correct, same part of speech first, no rivals, no word audio; feedback shows the completed sentence, form note (pales ← pale), reads the sentence, records the headword; feedback survives reload; words without sentences fall back; the wrong notebook keeps the mode; all 20 C2 Lesson 08 questions work; fits 360px.');
   } finally {
     await browser.close();
   }
