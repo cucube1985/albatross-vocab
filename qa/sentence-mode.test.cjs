@@ -70,7 +70,9 @@ const lesson08 = data.lessons.find(l => l.id === LESSON);
 for (const [lessonId, sets] of [[LESSON, SETS], [C2_LESSON, C2_SETS]]) for (const [word, answer, text] of sets) {
   const entry = data.lessons.find(l => l.id === lessonId).words.find(w => w.word === word);
   assert(entry, `${word} is in the lesson`);
-  assert.deepEqual(entry.sentence, { text, answer }, `${word}: the given sentence verbatim`);
+  assert.deepEqual(Object.keys(entry.sentence), ['text', 'answer', 'translation']);
+  assert.deepEqual({ text: entry.sentence.text, answer: entry.sentence.answer }, { text, answer }, `${word}: the given sentence verbatim`);
+  assert.match(entry.sentence.translation, /^[^A-Za-z]*[가-힣].*[.."]$/, `${word}: a Korean translation`);
   const keys = Object.keys(entry);
   assert.equal(keys[keys.indexOf('translation') + 1], 'sentence', `${word}: sentence sits after translation`);
   assert.equal(keys[keys.indexOf('sentence') + 1], 'sources', `${word}: and before sources`);
@@ -258,6 +260,47 @@ const SPY = () => {
       if (n < 19) await page.locator('[data-action="next"]').click();
     }
 
+    // --- 학습 모드 '문장 학습': 문장이 있는 수업에만 입구가 있고, 20문장을 한 화면에 — 단어 굵게·한 단계 크게, 해석, 단어 뜻.
+    for (const [lessonId, sets] of [[LESSON, SETS], [C2_LESSON, C2_SETS]]) {
+      await page.evaluate(() => showLessons());
+      await open(lessonId);
+      await page.evaluate(() => setViewMode('learn'));
+      const entry = page.locator('[data-learn-sentences]');
+      assert.match(await entry.innerText(), /문장 학습[\s\S]*문장 20개/);
+      await entry.click();
+      assert.equal(await page.locator('#learn-title').innerText(), '문장 학습');
+      const items = await page.evaluate(() => [...document.querySelectorAll('.sentence-item')].map(li => ({
+        text: li.querySelector('.sentence-text').textContent, word: li.querySelector('.sentence-word').textContent,
+        ko: li.querySelector('.sentence-ko').textContent, gloss: li.querySelector('.sentence-gloss').textContent,
+        bold: getComputedStyle(li.querySelector('.sentence-word')).fontWeight,
+        big: parseFloat(getComputedStyle(li.querySelector('.sentence-word')).fontSize) / parseFloat(getComputedStyle(li.querySelector('.sentence-text')).fontSize),
+      })));
+      assert.equal(items.length, 20, `${lessonId}: all 20 sentences on one screen`);
+      const lessonWords = data.lessons.find(l => l.id === lessonId).words;
+      for (const item of items) {
+        const [word, answer] = sets.find(s => s[2] === item.text);
+        const w = lessonWords.find(x => x.word === word);
+        assert.equal(item.word, answer, 'the word is the highlighted part');
+        assert(Number(item.bold) >= 700, 'bold');
+        assert(item.big > 1.1 && item.big < 1.3, 'one step larger than the sentence');
+        assert.equal(item.ko, w.sentence.translation);
+        assert(item.gloss.startsWith(`${word} ${w.ko}`), `gloss: ${item.gloss}`);
+        if (answer !== word) assert(item.gloss.includes(`문장 속 꼴 ${answer}`));
+      }
+      await page.evaluate(() => { window.__spoken.length = 0; });
+      await page.locator('.sentence-item [data-learn-action="speak-sentence"]').first().click();
+      await page.waitForFunction(t => window.__spoken.some(s => s.text === t), items[0].text);
+      if (lessonId === C2_LESSON) await snap(page, { path: path.join(__dirname, 'screenshots', 'sentence-study.png'), fullPage: true });
+      await page.keyboard.press('Escape');
+      assert(await page.locator('[data-learn-sentences]').evaluate(el => el === document.activeElement), 'Esc returns to the list, focus on the entry');
+      await page.evaluate(() => setViewMode('quiz'));
+    }
+    await page.evaluate(() => showLessons());
+    await open('albatross-c2-lesson-03');
+    await page.evaluate(() => setViewMode('learn'));
+    assert.equal(await page.locator('[data-learn-sentences]').count(), 0, 'no entry in lessons without sentences');
+    await page.evaluate(() => setViewMode('quiz'));
+
     // --- 폰 폭: 문제·피드백 모두 가로로 넘치지 않는다.
     await page.setViewportSize({ width: 360, height: 780 });
     await page.evaluate(() => showLessons());
@@ -270,7 +313,7 @@ const SPY = () => {
     await snap(page, { path: path.join(__dirname, 'screenshots', 'sentence-feedback-mobile.png'), fullPage: true });
 
     assert.deepEqual(errors, []);
-    console.log('PASS: C1 and C2 Lesson 08 carry the 20+20 given sentence sets verbatim (only there; answer once, standalone; field order kept); "문장 완성" is offered only where sentences exist (off with a help note elsewhere, fallback to English definitions); quick pick selects the 20; all 20 questions blank the in-sentence form, offer 4 distinct in-sentence answers with one correct, same part of speech first, no rivals, no word audio; feedback shows the completed sentence, form note (pales ← pale), reads the sentence, records the headword; feedback survives reload; words without sentences fall back; the wrong notebook keeps the mode; all 20 C2 Lesson 08 questions work; fits 360px.');
+    console.log('PASS: C1 and C2 Lesson 08 carry the 20+20 given sentence sets verbatim (only there; answer once, standalone; field order kept); "문장 완성" is offered only where sentences exist (off with a help note elsewhere, fallback to English definitions); quick pick selects the 20; all 20 questions blank the in-sentence form, offer 4 distinct in-sentence answers with one correct, same part of speech first, no rivals, no word audio; feedback shows the completed sentence, form note (pales ← pale), reads the sentence, records the headword; feedback survives reload; words without sentences fall back; the wrong notebook keeps the mode; all 20 C2 Lesson 08 questions work; learn-mode 문장 학습 lists all 20 sentences per lesson with the word bold and one step larger, translation and gloss, sentence audio, Esc back; fits 360px.');
   } finally {
     await browser.close();
   }

@@ -727,9 +727,30 @@
     .sentence-answer { margin:22px 0 20px; padding:16px 18px; border:1px solid var(--line); border-radius:10px; background:var(--neutral-040); }
     .sentence-answer p { margin:0; font-size:16px; line-height:1.85; color:var(--ink); }
     .sentence-fill { font-weight:700; color:var(--green); border-bottom:2px solid var(--gold-040); }
-    .sentence-answer .sentence-form { margin-top:6px; font-size:15px; color:var(--muted); word-break:keep-all; }
+    .sentence-answer .sentence-form, .sentence-answer .sentence-translation { margin-top:6px; font-size:15px; color:var(--muted); word-break:keep-all; }
     .sentence-form b { color:var(--ink); font-weight:650; }
     .sentence-answer .speak-row { margin:12px 0 0; }
+    /* --- 11단계: 문장 학습(학습 모드) — 문장 세트를 한 화면에 모아 보여 줘요 --- */
+    .sentence-study-open { display:flex; flex-direction:column; align-items:flex-start; gap:4px; position:relative; width:100%; margin:0 0 22px; padding:16px 48px 16px 18px; border:1px solid var(--green-150); border-radius:12px; background:var(--neutral-040); color:var(--ink); text-align:left; }
+    .sentence-study-open:hover { border-color:var(--green); }
+    .sentence-study-open .learn-arrow { position:absolute; right:18px; top:50%; transform:translateY(-50%); }
+    .sentence-study-title { margin:14px 0 8px; font-size:clamp(26px,3vw,34px); letter-spacing:-.5px; }
+    .sentence-study-intro { margin:0 0 18px; color:var(--muted); font-size:15px; line-height:1.7; word-break:keep-all; }
+    .sentence-list { list-style:none; margin:0; padding:0; }
+    .sentence-item { display:flex; gap:14px; padding:18px 0; border-top:1px solid var(--line); }
+    .sentence-num { flex:0 0 auto; min-width:26px; font-size:13px; font-weight:700; color:var(--muted); font-variant-numeric:tabular-nums; padding-top:4px; }
+    .sentence-body { min-width:0; flex:1 1 auto; }
+    .sentence-text { margin:0; font-size:18px; line-height:1.75; color:var(--ink); overflow-wrap:anywhere; }
+    .sentence-word { font-size:1.2em; font-weight:800; color:var(--green); } /* 문장보다 한 단계 크게, 굵게 */
+    .sentence-ko { margin:6px 0 0; font-size:16px; line-height:1.75; color:var(--green-220); word-break:keep-all; }
+    .sentence-gloss { margin:4px 0 0; font-size:14px; line-height:1.7; color:var(--muted); word-break:keep-all; }
+    .sentence-gloss b { color:var(--ink); font-weight:650; }
+    .sentence-item .speak-button { margin-top:10px; }
+    @media (max-width:760px) {
+      .sentence-item { gap:10px; padding:16px 0; }
+      .sentence-text { font-size:17px; }
+      .sentence-ko { font-size:15px; }
+    }
   </style>
 </head>
 <body>
@@ -18477,7 +18498,8 @@
           "translation": "과학자들은 작년에 암 치료에서 중대한 돌파구를 마련했다.",
           "sentence": {
             "text": "Informing the public about scientific breakthroughs has never been easy.",
-            "answer": "breakthroughs"
+            "answer": "breakthroughs",
+            "translation": "과학의 획기적인 발견을 대중에게 알리는 일은 한 번도 쉬웠던 적이 없다."
           },
           "sources": [
             [
@@ -18625,7 +18647,8 @@
           "translation": "그 광고는 누구나 따라 흥얼거리게 된, 귀에 착 감기는 멜로디를 썼다.",
           "sentence": {
             "text": "Scientists try to pique people's interest in the new discoveries by using catchy terms.",
-            "answer": "catchy"
+            "answer": "catchy",
+            "translation": "과학자들은 귀에 착 감기는 용어를 써서 새로운 발견에 대한 사람들의 관심을 불러일으키려 한다."
           },
           "sources": [
             [
@@ -18771,7 +18794,8 @@
           "translation": "그 보고서에는 투자자들을 오도한 중대한 오류가 있었다.",
           "sentence": {
             "text": "Comparing finding the Higgs boson to finding God was a(n) gross exaggeration.",
-            "answer": "gross"
+            "answer": "gross",
+            "translation": "힉스 보손을 찾은 것을 신을 찾은 것에 비유한 것은 심한 과장이었다."
           },
           "sources": [
             [
@@ -19056,7 +19080,8 @@
           "translation": "이 희귀한 사과 품종은 몇몇 산골 마을에서만 자란다.",
           "sentence": {
             "text": "As an experiment, scientists imported African bee varieties which produced more honey.",
-            "answer": "varieties"
+            "answer": "varieties",
+            "translation": "실험 삼아 과학자들은 꿀을 더 많이 만드는 아프리카 벌 품종들을 들여왔다."
           },
           "sources": [
             [
@@ -19109,7 +19134,8 @@
           "translation": "새 세금이 승인되면 에너지 요금이 상당히 오를 것이다.",
           "sentence": {
             "text": "The demand for bananas has increased substantially since the broadcast about the effectiveness of them.",
-            "answer": "substantially"
+            "answer": "substantially",
+            "translation": "바나나의 효능에 관한 방송 이후 바나나 수요가 상당히 늘었다."
           },
           "sources": [
             [
@@ -19215,7 +19241,8 @@
           "translation": "농부들은 더 튼튼한 송아지를 얻으려고 토종 소를 수입 황소와 이종 교배한다.",
           "sentence": {
             "text": "Scientists cross-bred African bees with European bees.",
-            "answer": "cross-bred"
+            "answer": "cross-bred",
+            "translation": "과학자들은 아프리카 벌을 유럽 벌과 이종 교배했다."
           },
           "sources": [
             [
@@ -19255,7 +19282,8 @@
           "translation": "양봉가는 여왕벌을 살피려고 벌집을 조심스럽게 열었다.",
           "sentence": {
             "text": "The hive is usually filled with bees.",
-            "answer": "hive"
+            "answer": "hive",
+            "translation": "벌집은 보통 벌들로 가득 차 있다."
           },
           "sources": [
             [
@@ -19419,7 +19447,8 @@
           "translation": "간식이 바로 책상 위에 놓여 있으면 유혹을 견디기 어렵다.",
           "sentence": {
             "text": "The story of an army of deadly bees relentlessly marching north was too good for the audience to resist.",
-            "answer": "resist"
+            "answer": "resist",
+            "translation": "치명적인 벌 떼가 사정없이 북쪽으로 진격한다는 이야기는 너무 솔깃해서 대중이 외면할 수 없었다."
           },
           "sources": [
             [
@@ -19468,7 +19497,8 @@
           "translation": "당국은 지진 후 사망자 수에 대한 새로운 추정치를 발표했다.",
           "sentence": {
             "text": "Each killer bee attack is guaranteed to generate news headlines, but the actual death toll has been small.",
-            "answer": "death toll"
+            "answer": "death toll",
+            "translation": "살인벌의 공격은 매번 어김없이 뉴스 헤드라인에 오르지만, 실제 사망자 수는 적었다."
           },
           "sources": [
             [
@@ -19521,7 +19551,8 @@
           "translation": "작년 매출은 올해의 기록적인 수치에 비하면 무색하다.",
           "sentence": {
             "text": "The bees have killed about 1,000 people, but that figure pales in comparison to the 600,000 people killed annually by malaria-infected mosquitoes.",
-            "answer": "pales"
+            "answer": "pales",
+            "translation": "그 벌들은 약 1,000명을 죽였지만, 그 수치는 말라리아에 감염된 모기 때문에 해마다 죽는 60만 명에 비하면 무색하다."
           },
           "sources": [
             [
@@ -19624,7 +19655,8 @@
           "translation": "당신의 에세이가 형편없다는 뜻을 내비치려던 것은 아니었다.",
           "sentence": {
             "text": "Although she was smiling, the judge's comment implied that the performance was terrible.",
-            "answer": "implied"
+            "answer": "implied",
+            "translation": "미소를 짓고 있었지만, 심사위원의 평은 그 공연이 형편없었다는 것을 내비쳤다."
           },
           "sources": [
             [
@@ -19824,7 +19856,8 @@
           "translation": "그는 일주일 내내 고의로 내 메시지를 무시했다.",
           "sentence": {
             "text": "Pop scientists want to gain more public attention, so they deliberately write in a way that makes science fun.",
-            "answer": "deliberately"
+            "answer": "deliberately",
+            "translation": "대중 과학자들은 대중의 관심을 더 끌고 싶어서, 과학을 재미있게 만드는 방식으로 일부러 글을 쓴다."
           },
           "sources": [
             [
@@ -19935,7 +19968,8 @@
           "translation": "투자자들은 금리 변화에 뒤처지지 않도록 해야 한다.",
           "sentence": {
             "text": "Some people just want to keep abreast of the latest scientific findings.",
-            "answer": "keep abreast"
+            "answer": "keep abreast",
+            "translation": "어떤 사람들은 그저 최신 과학 연구 결과에 뒤처지지 않기를 원한다."
           },
           "sources": [
             [
@@ -20131,7 +20165,8 @@
           "translation": "우리는 먼저 예산에 합의한 뒤 다음 주에 세부 사항을 논의할 것이다.",
           "sentence": {
             "text": "The guide explained the specifics to the visitors, so that they wouldn't have to read it from the brochures.",
-            "answer": "specifics"
+            "answer": "specifics",
+            "translation": "가이드는 방문객들이 안내 책자를 읽지 않아도 되도록 세부 사항을 설명해 주었다."
           },
           "sources": [
             [
@@ -20290,7 +20325,8 @@
           "translation": "기자는 모든 주장을 믿을 만한 정보원과 대조해 확인해야 한다.",
           "sentence": {
             "text": "The detective started to look for a(n) credible witness for the case.",
-            "answer": "credible"
+            "answer": "credible",
+            "translation": "탐정은 그 사건의 믿을 만한 목격자를 찾기 시작했다."
           },
           "sources": [
             [
@@ -20347,7 +20383,8 @@
           "translation": "파리는 박물관, 카페, 패션 하우스로 명성이 높다.",
           "sentence": {
             "text": "Taylor was a(n) renowned chef who was often invited as a live guest for cooking channels.",
-            "answer": "renowned"
+            "answer": "renowned",
+            "translation": "테일러는 요리 채널에 생방송 게스트로 자주 초대되는 명성 있는 요리사였다."
           },
           "sources": [
             [
@@ -20476,7 +20513,8 @@
           "translation": "그녀의 첫 소설은 주말 신문에 실린 논평에서 극찬을 받았다.",
           "sentence": {
             "text": "As one book review puts it, Hawking's book \"marries a child's wonder to a genius's intellect.\"",
-            "answer": "review"
+            "answer": "review",
+            "translation": "한 서평의 표현대로, 호킹의 책은 \"아이의 경이로움과 천재의 지성을 결합한다.\""
           },
           "sources": [
             [
@@ -20525,7 +20563,8 @@
           "translation": "학생들은 미지수가 두 개인 방정식을 풀어야 했다.",
           "sentence": {
             "text": "The math equation was simple, but it was difficult for Susan who didn't like numbers.",
-            "answer": "equation"
+            "answer": "equation",
+            "translation": "그 수학 방정식은 간단했지만, 숫자를 싫어하는 수잔에게는 어려웠다."
           },
           "sources": [
             [
@@ -20716,7 +20755,8 @@
           "translation": "유권자들 사이의 일반적인 의견은 세금이 너무 높다는 것이다.",
           "sentence": {
             "text": "No smoking inside the building is a(n) general rule in public.",
-            "answer": "general"
+            "answer": "general",
+            "translation": "건물 안 금연은 공공장소의 일반적인 규칙이다."
           },
           "sources": [
             [
@@ -20921,7 +20961,8 @@
           "translation": "많은 젊은 부부에게 도시의 집은 이제 손이 닿지 않는 꿈이 되었다.",
           "sentence": {
             "text": "The mother's medicines were placed out of reach of the children lest they eat them.",
-            "answer": "out of reach"
+            "answer": "out of reach",
+            "translation": "어머니의 약은 아이들이 먹지 않도록 아이들 손이 닿지 않는 곳에 놓여 있었다."
           },
           "sources": [
             [
@@ -34006,7 +34047,8 @@
           "translation": "의사들은 그의 심장 근처에서 막힌 동맥을 발견하고 즉시 수술했다.",
           "sentence": {
             "text": "A(n) artery is a blood vessel that transports blood from the heart to the rest of the body.",
-            "answer": "artery"
+            "answer": "artery",
+            "translation": "동맥은 심장에서 몸의 나머지 부분으로 피를 실어 나르는 혈관이다."
           },
           "sources": [
             [
@@ -34112,7 +34154,8 @@
           "translation": "벽은 그림이나 포스터 하나 없이 수수하고 휑했다.",
           "sentence": {
             "text": "The laboratory was located in a(n) unembellished building that didn't even have a reception desk.",
-            "answer": "unembellished"
+            "answer": "unembellished",
+            "translation": "그 연구소는 안내 데스크조차 없는 수수한 건물에 있었다."
           },
           "sources": [
             [
@@ -34282,7 +34325,8 @@
           "translation": "외과 의사들은 지난주 그녀의 좁아진 관상 동맥에 스텐트를 넣었다.",
           "sentence": {
             "text": "Removing plaque from coronary arteries will reduce the risk of heart attacks.",
-            "answer": "coronary"
+            "answer": "coronary",
+            "translation": "관상 동맥에서 플라크를 제거하면 심장 마비의 위험이 줄어든다."
           },
           "sources": [
             [
@@ -34485,7 +34529,8 @@
           "translation": "구급대원 두 명이 부상당한 선수를 들것에 실어 경기장 밖으로 옮겼다.",
           "sentence": {
             "text": "Bobby was hit badly by the motorcycle, so he was carried to the hospital on a(n) stretcher.",
-            "answer": "stretcher"
+            "answer": "stretcher",
+            "translation": "바비는 오토바이에 심하게 치여서 들것에 실려 병원으로 옮겨졌다."
           },
           "sources": [
             [
@@ -34525,7 +34570,8 @@
           "translation": "플레이어는 조이스틱으로 화면 속 캐릭터를 조종한다.",
           "sentence": {
             "text": "Doctors are able to steer the nano-robot from a different room using a(n) joystick.",
-            "answer": "joystick"
+            "answer": "joystick",
+            "translation": "의사들은 조이스틱을 써서 다른 방에서 나노 로봇을 조종할 수 있다."
           },
           "sources": [
             [
@@ -34574,7 +34620,8 @@
           "translation": "시골 환자들은 이제 도시까지 먼 길을 가지 않고도 원격 의료를 통해 정기적인 진료를 받는다.",
           "sentence": {
             "text": "Patients in rural areas no longer have to commute to their nearest hospital thanks to telemedicine.",
-            "answer": "telemedicine"
+            "answer": "telemedicine",
+            "translation": "원격 의료 덕분에 시골 지역 환자들은 더 이상 가장 가까운 병원까지 오가지 않아도 된다."
           },
           "sources": [
             [
@@ -34654,7 +34701,8 @@
           "translation": "의사는 내 가슴에 청진기를 대고 주의 깊게 들었다.",
           "sentence": {
             "text": "Physicians have been using stethoscopes to listen to our heartbeats for hundreds of years.",
-            "answer": "stethoscopes"
+            "answer": "stethoscopes",
+            "translation": "의사들은 수백 년 동안 청진기로 우리의 심장 박동을 들어 왔다."
           },
           "sources": [
             [
@@ -34783,7 +34831,8 @@
           "translation": "그 달리기 선수는 심장 정지를 겪었지만 신속한 심폐소생술 덕분에 심장이 다시 뛰기 시작했다.",
           "sentence": {
             "text": "Preventative cardiac care will allow the early detection of heart disease.",
-            "answer": "cardiac"
+            "answer": "cardiac",
+            "translation": "예방 차원의 심장 관리는 심장병을 일찍 발견할 수 있게 해 준다."
           },
           "sources": [
             [
@@ -34881,7 +34930,8 @@
           "translation": "그 반지에는 보석들이 박혀 있었다.",
           "sentence": {
             "text": "The lost emperor's magnificent crown consisted of hundreds of embedded jewels.",
-            "answer": "embedded"
+            "answer": "embedded",
+            "translation": "사라진 황제의 웅장한 왕관에는 수백 개의 보석이 박혀 있었다."
           },
           "sources": [
             [
@@ -34922,7 +34972,8 @@
           "translation": "그녀는 열이 나는 아들을 집 근처 소아과 병원에 데려갔다.",
           "sentence": {
             "text": "Joanne was always good with children so she decided to pursue pediatric medicine.",
-            "answer": "pediatric"
+            "answer": "pediatric",
+            "translation": "조앤은 늘 아이들을 잘 다루어서 소아과 의학의 길을 가기로 했다."
           },
           "sources": [
             [
@@ -35015,7 +35066,8 @@
           "translation": "기상 예보관들은 주말 내내 수도에 이따금씩 비가 내릴 것으로 예상한다.",
           "sentence": {
             "text": "Bobby is trying out intermittent fasting, but is struggling as his body is used to regular meal times.",
-            "answer": "intermittent"
+            "answer": "intermittent",
+            "translation": "바비는 간헐적 단식을 해 보고 있지만, 몸이 규칙적인 식사 시간에 익숙해서 힘들어하고 있다."
           },
           "sources": [
             [
@@ -35064,7 +35116,8 @@
           "translation": "탈수 상태의 그 선수는 더운 오후에 결승선 근처에서 쓰러졌다.",
           "sentence": {
             "text": "The dehydrated rabbit finally regained consciousness after the doctor gave it some sweetened water.",
-            "answer": "dehydrated"
+            "answer": "dehydrated",
+            "translation": "탈수 상태였던 토끼는 의사가 설탕물을 조금 주자 마침내 의식을 되찾았다."
           },
           "sources": [
             [
@@ -35193,7 +35246,8 @@
           "translation": "아무도 인정하고 싶어 하지 않았지만 그 프로젝트는 사실상의 실패였다.",
           "sentence": {
             "text": "As telecommunication technologies in smartphones evolve, they will become de facto portable health care centers.",
-            "answer": "de facto"
+            "answer": "de facto",
+            "translation": "스마트폰의 통신 기술이 발전하면서, 스마트폰은 사실상 휴대용 의료 센터가 될 것이다."
           },
           "sources": [
             [
@@ -35242,7 +35296,8 @@
           "translation": "감세는 흔히 침체된 경제를 살릴 만병통치약처럼 홍보된다.",
           "sentence": {
             "text": "My grandmother always tells me to smile because she thinks laughter is an effective panacea.",
-            "answer": "panacea"
+            "answer": "panacea",
+            "translation": "할머니는 웃음이 효과 좋은 만병통치약이라고 생각하셔서 늘 나에게 웃으라고 하신다."
           },
           "sources": [
             [
@@ -35295,7 +35350,8 @@
           "translation": "그 기사는 새로운 팬들을 혼란스럽게 하는 스포츠 용어로 가득했다.",
           "sentence": {
             "text": "Cell phone apps will be able to translate complex medical jargon into an easier vocabulary that everyone can understand.",
-            "answer": "jargon"
+            "answer": "jargon",
+            "translation": "휴대폰 앱은 복잡한 의학 용어를 누구나 이해할 수 있는 쉬운 말로 바꿔 줄 수 있게 될 것이다."
           },
           "sources": [
             [
@@ -35392,7 +35448,8 @@
           "translation": "스캔 결과 종양이 발견되자 의사들은 그에게 좋지 않은 예후를 전했다.",
           "sentence": {
             "text": "Should the patient follow the doctor's advice, his prognosis will not be so bad.",
-            "answer": "prognosis"
+            "answer": "prognosis",
+            "translation": "환자가 의사의 조언을 따른다면, 그의 예후는 그리 나쁘지 않을 것이다."
           },
           "sources": [
             [
@@ -35571,7 +35628,8 @@
           "translation": "컨실러는 작은 피부 잡티를 가릴 수는 있지만 낫게 하지는 못한다.",
           "sentence": {
             "text": "A quick scan indicated that the spot on Martha's skin was just a harmless blemish.",
-            "answer": "blemish"
+            "answer": "blemish",
+            "translation": "간단한 검사 결과, 마사의 피부에 난 점은 해롭지 않은 잡티일 뿐이었다."
           },
           "sources": [
             [
@@ -35647,7 +35705,8 @@
           "translation": "외과의는 환자의 갈비뼈 바로 아래에 작은 절개를 했다.",
           "sentence": {
             "text": "Robotic surgeons are able to make tiny incisions that leave much smaller scars.",
-            "answer": "incisions"
+            "answer": "incisions",
+            "translation": "로봇 외과의는 흉터가 훨씬 작게 남는 아주 작은 절개를 할 수 있다."
           },
           "sources": [
             [
@@ -35692,7 +35751,8 @@
           "translation": "그 작은 돌 마을은 절벽 끝에 위치해 있는 듯하다.",
           "sentence": {
             "text": "The view of the black crow perched on the branch of a tree in the middle of the cemetery was quite spooky.",
-            "answer": "perched"
+            "answer": "perched",
+            "translation": "묘지 한가운데 나뭇가지에 앉아 있는 검은 까마귀의 모습은 꽤 으스스했다."
           },
           "sources": [
             [
@@ -35746,7 +35806,8 @@
           "translation": "병원 직원들은 검사 결과가 나올 때까지 그 환자를 격리시키기로 했다.",
           "sentence": {
             "text": "The experts recommended the government to sequester COVID-19 patients to prevent further spread.",
-            "answer": "sequester"
+            "answer": "sequester",
+            "translation": "전문가들은 더 이상의 확산을 막기 위해 코로나19 환자를 격리하라고 정부에 권고했다."
           },
           "sources": [
             [
@@ -44800,6 +44861,7 @@
         ${viewSwitchHTML()}
         <p class="selection-intro">단어를 누르면 소리로 읽어 주고, 영어 뜻·한글 뜻·유래·예문을 한 번에 보여 줘요.<br>학습 모드는 기억 단계에 기록하지 않아요. 익힌 뒤에는 풀이 모드에서 문제로 확인해 보세요.</p>
         ${state.phase!=='idle'?'<p class="notebook-note">풀던 문제가 있어요. 풀이 모드로 바꾸면 이어서 풀 수 있어요.</p>':''}
+        ${sentenceCount()?`<button type="button" class="sentence-study-open" data-learn-sentences><span class="view-name">문장 학습</span><span class="view-sub">문장 ${sentenceCount()}개를 한 화면에서 · 해석과 단어 뜻 함께</span><span class="learn-arrow" aria-hidden="true">→</span></button>`:''}
         <div class="selection-search">
           <label for="selection-search-input">단어 검색</label>
           <input id="selection-search-input" type="search" autocomplete="off" spellcheck="false" placeholder="영어 단어 · 표현 · 한글 뜻" aria-describedby="selection-search-count">
@@ -44826,7 +44888,7 @@
     }
     function openLearn(index) {
       if(!words[index]) return;
-      learnIndex=index;
+      learnIndex=index; learnPage='card';
       stopSpeech();
       showView('learn');
       renderLearnCard();
@@ -44851,7 +44913,44 @@
       document.getElementById('learn-title').focus({preventScroll:true});
       window.scrollTo(0,0);
     }
-    function closeLearn() { showWordSelection(learnIndex); }
+    // 문장 학습: 문장 세트가 있는 단어의 문장을 한 화면에 모두 보여 줘요. 단어는 굵게·한 단계 크게, 아래에 해석과 단어 뜻을 달아요.
+    let learnPage='card'; // 'card' 단어 카드 / 'sentences' 문장 학습
+    function sentenceStudyItems() { return words.map((w,i)=>({w,i,parts:sentenceParts(w)})).filter(item=>item.parts); }
+    function openSentenceStudy() {
+      stopSpeech();
+      learnPage='sentences';
+      showView('learn');
+      const items=sentenceStudyItems();
+      document.title=`문장 학습 · ${activeLesson.title} | 단어 익히기`;
+      document.getElementById('learn-view').innerHTML=`
+        <div class="learn-bar"><button type="button" class="learn-back" data-learn-action="list" aria-keyshortcuts="Escape">← 단어 목록</button><span class="learn-position"><span aria-hidden="true"><b>${items.length}</b> 문장</span><span class="sr-only">문장 ${items.length}개</span></span></div>
+        <section class="study-card sentence-study" aria-labelledby="learn-title">
+          <div class="card-top">${activeLesson.virtual?`<span class="eyebrow">${escapeHTML(activeLesson.title)}</span>`:`<span class="eyebrow" lang="en">${escapeHTML(activeLesson.title)}</span>`}</div>
+          <h2 class="sentence-study-title" id="learn-title" tabindex="-1">문장 학습</h2>
+          <p class="sentence-study-intro">굵게 쓴 단어가 이번에 익힐 단어예요. 문장 아래의 해석과 단어 뜻을 함께 읽어 보세요.${speech?' ♪ 버튼을 누르면 문장을 읽어 줘요.':''}</p>
+          <ol class="sentence-list">${items.map(({w,i,parts},n)=>{
+            const answer=w.sentence.answer, form=answer.toLowerCase()===w.word.toLowerCase()?'':` · 문장 속 꼴 <b lang="en">${escapeHTML(answer)}</b>`;
+            return `<li class="sentence-item"><span class="sentence-num" aria-hidden="true">${pad2(n+1)}</span><div class="sentence-body">
+              <p class="sentence-text" lang="en">${escapeHTML(parts[0])}<strong class="sentence-word">${escapeHTML(answer)}</strong>${escapeHTML(parts[1])}</p>
+              <p class="sentence-ko">${escapeHTML(w.sentence.translation||'')}</p>
+              <p class="sentence-gloss"><b lang="en">${escapeHTML(w.word)}</b> ${escapeHTML(w.ko)}${form}</p>
+              ${speech?`<button type="button" class="speak-button" data-learn-action="speak-sentence" data-index="${i}" aria-label="${n+1}번 문장 듣기"><span class="speak-icon" aria-hidden="true">♪</span>문장 듣기</button>`:''}
+            </div></li>`;
+          }).join('')}</ol>
+          <p class="relation-note keyboard-hint"><kbd>Esc</kbd> 단어 목록</p>
+        </section>`;
+      document.getElementById('learn-title').focus({preventScroll:true});
+      window.scrollTo(0,0);
+    }
+    function closeLearn() {
+      if(learnPage==='sentences') {
+        learnPage='card';
+        showWordSelection();
+        document.querySelector('[data-learn-sentences]')?.focus({preventScroll:true});
+        return;
+      }
+      showWordSelection(learnIndex);
+    }
     function updateSelectionControls() {
       const count=state.draftIds.size;
       document.getElementById('selection-count').textContent=`${count} / ${words.length}개 선택`;
@@ -45064,7 +45163,7 @@
       if(!parts) return '';
       const answer=w.sentence.answer;
       const form=answer.toLowerCase()===w.word.toLowerCase()?'':`<p class="sentence-form">빈칸에 들어간 꼴 <b lang="en">${escapeHTML(answer)}</b> · 학습 단어 <b lang="en">${escapeHTML(w.word)}</b></p>`;
-      return `<div class="sentence-answer"><h3 class="section-title">완성한 문장</h3><p lang="en">${escapeHTML(parts[0])}<strong class="sentence-fill">${escapeHTML(answer)}</strong>${escapeHTML(parts[1])}</p>${form}<div class="speak-row">${speakButtonHTML('sentence','문장 듣기')}</div></div>`;
+      return `<div class="sentence-answer"><h3 class="section-title">완성한 문장</h3><p lang="en">${escapeHTML(parts[0])}<strong class="sentence-fill">${escapeHTML(answer)}</strong>${escapeHTML(parts[1])}</p>${w.sentence.translation?`<p class="sentence-translation">${escapeHTML(w.sentence.translation)}</p>`:''}${form}<div class="speak-row">${speakButtonHTML('sentence','문장 듣기')}</div></div>`;
     }
     function renderFeedback(selected) {
       const w=currentWord(), correct=selected.correct;
@@ -45234,6 +45333,7 @@
       else if(action==='prev') openLearn(learnIndex-1);
       else if(action==='next') openLearn(learnIndex+1);
       else if(action==='speak') speakSequence(learnReadItems(button.dataset.speakKind));
+      else if(action==='speak-sentence') { const w=words[Number(button.dataset.index)]; if(w && w.sentence) speakSequence([{text:w.sentence.text,lang:'en'}]); }
     });
     document.getElementById('word-selection').addEventListener('change',event=>{
       if(!selectionVisible || !event.target.matches('input[type="checkbox"]')) return;
@@ -45257,6 +45357,7 @@
       if(!selectionVisible) return;
       const viewButton=event.target.closest('[data-view-mode]');
       if(viewButton) { setViewMode(viewButton.dataset.viewMode); return; }
+      if(event.target.closest('[data-learn-sentences]')) { openSentenceStudy(); return; }
       const learnButton=event.target.closest('[data-learn]');
       if(learnButton) { openLearn(Number(learnButton.dataset.learn)); return; }
       const button=event.target.closest('[data-selection-action]');
