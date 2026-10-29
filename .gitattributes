@@ -1,0 +1,5 @@
+# build.cjs 가 만든 HTML 과 틀·데이터를 바이트 단위로 비교하므로 줄바꿈을 LF 로 고정해요.
+*.html text eol=lf
+*.json text eol=lf
+*.cjs text eol=lf
+*.md text eol=lf
